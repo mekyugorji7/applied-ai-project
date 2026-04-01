@@ -9,3 +9,13 @@ id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
 8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22
 9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78
 10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35
+11,Voltage Verse,Kai Cipher,hip-hop,euphoric,0.88,95,0.92,0.74,0.08
+12,Winter Adagio,Sofia Marin,classical,melancholic,0.22,58,0.28,0.31,0.96
+13,Dust Road Echoes,Clay Mercer,country,nostalgic,0.55,102,0.62,0.51,0.42
+14,Boneforge March,Iron Cartography,metal,aggressive,0.96,168,0.22,0.38,0.03
+15,Sunrise Signal,The Island Keys,reggae,playful,0.61,84,0.88,0.69,0.55
+16,Willow & Ember,Juniper Hollow,folk,dreamy,0.31,88,0.55,0.47,0.84
+17,Calle Sin Fin,Nova Ritmo,Latin,romantic,0.78,104,0.76,0.84,0.19
+18,Glass Cathedrals,Null Trace,techno,dark,0.72,128,0.35,0.71,0.12
+19,Low Tide Blues,Etta Street,blues,somber,0.33,72,0.34,0.49,0.77
+20,Dawn Letters,Yumi Reyes,R&B,hopeful,0.64,98,0.81,0.67,0.28

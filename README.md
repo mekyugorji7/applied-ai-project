@@ -15,19 +15,100 @@ Replace this paragraph with your own summary of what your version does.
 
 ---
 
+image.png
+
 ## How The System Works
 
-Explain your design in plain language.
+In production, recommenders usually blend many signals, what you played, skipped, or replayed; what similar users like; fresh or promoted titles; diversity and fairness rules; and often ML models trained on huge logs. My simulation is much simpler as it is content-based only. It never uses crowd behavior or listening history. It utilizes set weights like genre and mood matches, closeness on numeric vibe fields (especially energy, and optionally tempo, valence, danceability, plus an acoustic preference), then ranks by total score to produce top‑k suggestions. The higher the score, the better the match
 
-Some prompts to answer:
+### Song features:
+id, title, artist, genre, mood, energy, tempo_bpm, valence, danceability, acousticness
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+### UserProfile features:
+favorite_genre, favorite_mood, target_energy, likes_acoustic
 
-You can include a simple diagram or bullet list if helpful.
+### What features does each Song use?
+Each Song is a small bundle of metadata + vibe numbers (from your CSV). The dataclass fields are:
+
+Identity / display: id, title, artist
+Style / vibe labels: genre, mood
+Numeric audio-style features (0–1 or BPM): energy, tempo_bpm, valence, danceability, acousticness
+
+Scoring uses genre, mood, and the numeric fields when the user prefs include matching keys (see below). Titles and artists are not part of the score; they’re for showing results.
+
+
+### What does UserProfile store?
+
+`UserProfile` is the object-oriented user model (what your tests use). It holds:
+
+`favorite_genre`
+`favorite_mood`
+`target_energy`
+`likes_acoustic`
+`target_tempo_bpm`
+`target_valence`
+`target_danceability`
+
+### How does Recommender compute a score for each song?
+
+All scoring goes through score_song_with_explanation (or score_song, which calls it). Roughly:
+
+Genre match: if the song’s genre equals favorite_genre, add 2.0 points.
+Mood match: if the song’s mood equals favorite_mood, add 1.0 point.
+Energy closeness: up to 1.0 extra points, using 1 − |song_energy − target_energy| (capped at zero).
+
+Optional extras (only if those keys exist on the prefs dict): tempo vs target_tempo_bpm, valence vs target_valence, danceability vs target_danceability, and an acoustic alignment term from likes_acoustic and the song’s acousticness.
+
+The high-level weights are declared at the top of the file (genre vs mood vs energy max, etc.).
+
+```
+
+WEIGHT_GENRE_MATCH = 2.0
+WEIGHT_MOOD_MATCH = 1.0
+...
+WEIGHT_ENERGY_SIMILARITY_MAX = 1.0
+...
+
+```
+
+The Recommender class turns each Song into a dict and runs the same scoring:
+
+recommender.py
+Lines 207-214
+
+```
+  recommender.py
+  Lines 207-214
+      def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
+        prefs = _profile_to_prefs(user)
+        ranked: List[Tuple[Song, float]] = []
+        for song in self.songs:
+            s = score_song(_song_to_dict(song), prefs)
+            ranked.append((song, s))
+        ranked.sort(key=lambda x: (-x[1], x[0].id))
+        return [s for s, _ in ranked[:k]]
+```
+
+### How do you choose which songs to recommend?
+
+1. Score every song in the catalog (one pass).
+2. Sort by score highest first. If two songs tie, lower id wins (stable, predictable ordering).
+3. Take the first k (e.g. top 5).
+
+
+### Algorithm Recipe
+
+1. Load all tracks from data/songs.csv into a list.
+2. Set the user’s targets (genre, mood, energy, acoustic preference, and optionally tempo / valence / danceability if you include them).
+3. For each song, add points:
+  - +2 if its genre matches your favorite genre
+  - +1 if its mood matches your favorite mood
+  - Up to +1 for how close its energy is to your target (closer = more points)
+  - Up to +0.5 each for tempo, valence, and danceability
+  - Up to +0.5 for acoustic fit (rewards higher acousticness if you like acoustic, lower if you don’t)
+4. Sort songs by total score (highest first). If there’s a tie, lower id wins.
+
+Return the top k songs (and a one-line explanation of what added points).
 
 ---
 
