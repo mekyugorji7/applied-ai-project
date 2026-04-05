@@ -8,7 +8,8 @@ This project builds a small music recommender called My Vibe v1.0. It represents
 
 ### Screenshot for Terminal App
 
-image.png
+<img width="779" height="800" alt="MyVIbe Screenshot" src="https://github.com/user-attachments/assets/068cbf2d-2c6f-4d04-b1b1-f409eb10229b" />
+
 
 ### Screenshot for Terminal Output Edge Cases
 
