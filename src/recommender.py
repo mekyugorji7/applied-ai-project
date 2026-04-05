@@ -6,12 +6,12 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 # --- Point-weighting strategy -------------------------------------------------
-# Discrete matches: genre matters more than mood (2:1), per assignment starting point.
-WEIGHT_GENRE_MATCH = 2.0
+# Discrete matches: genre now contributes less relative to continuous similarity.
+WEIGHT_GENRE_MATCH = 1.0
 WEIGHT_MOOD_MATCH = 1.0
 
 # Continuous: up to this many points when song energy exactly equals target (0–1 scale).
-WEIGHT_ENERGY_SIMILARITY_MAX = 1.0
+WEIGHT_ENERGY_SIMILARITY_MAX = 2.0
 
 # Optional refinements when `user_prefs` includes extra keys (e.g. from TASTE_PROFILE).
 WEIGHT_TEMPO_SIMILARITY_MAX = 0.5

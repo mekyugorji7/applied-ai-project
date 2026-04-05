@@ -2,32 +2,264 @@
 
 ## Project Summary
 
-In this project you will build and explain a small music recommender system.
-
-Your goal is to:
-
-- Represent songs and a user "taste profile" as data
-- Design a scoring rule that turns that data into recommendations
-- Evaluate what your system gets right and wrong
-- Reflect on how this mirrors real world AI recommenders
-
-Replace this paragraph with your own summary of what your version does.
+This project builds a small music recommender called My Vibe v1.0. It represents songs and user taste as structured features, then scores each song by how closely it matches the profile. The system ranks songs, shows top recommendations, and is tested with normal and edge-case profiles. I also evaluate strengths and limits, including bias from small data and simple scoring rules.
 
 ---
 
+### Screenshot for Terminal App
+
 image.png
+
+### Screenshot for Terminal Output Edge Cases
+
+=============================================
+
+----- Top Recommendations: USER_PREFS_CHILL_LOFI -----
+
+=============================================
+
+1. Midnight Coding                | Score: 5.84
+
+---
+
+1. Library Rain                   | Score: 5.80
+
+---
+
+1. Focus Flow                     | Score: 4.85
+
+---
+
+1. Spacewalk Thoughts             | Score: 3.57
+
+---
+
+1. Coffee Shop Stories            | Score: 2.72
+
+---
+
+=============================================
+
+----- Top Recommendations: USER_PREFS_UPBEAT_POP -----
+
+=============================================
+
+1. Sunrise City                   | Score: 5.85
+
+---
+
+1. Gym Hero                       | Score: 4.75
+
+---
+
+1. Rooftop Lights                 | Score: 3.70
+
+---
+
+1. Voltage Verse                  | Score: 2.69
+
+---
+
+1. Calle Sin Fin                  | Score: 2.69
+
+---
+
+=============================================
+
+----- Top Recommendations: USER_PREFS_SOFT_AMBIENT -----
+
+=============================================
+
+1. Spacewalk Thoughts             | Score: 5.91
+
+---
+
+1. Library Rain                   | Score: 3.73
+
+---
+
+1. Midnight Coding                | Score: 3.50
+
+---
+
+1. Willow & Ember                 | Score: 2.69
+
+---
+
+1. Winter Adagio                  | Score: 2.65
+
+---
+
+=============================================
+
+----- Top Recommendations: EDGE_CONFLICTING_AFFECT -----
+
+=============================================
+
+1. Winter Adagio                  | Score: 3.37
+
+---
+
+1. Storm Runner                   | Score: 2.19
+
+---
+
+1. Boneforge March                | Score: 2.07
+
+---
+
+1. Gym Hero                       | Score: 2.05
+
+---
+
+1. Glass Cathedrals               | Score: 1.97
+
+---
+
+=============================================
+
+----- Top Recommendations: EDGE_OUT_OF_RANGE -----
+
+=============================================
+
+1. Boneforge March                | Score: 3.79
+
+---
+
+1. Gym Hero                       | Score: 0.60
+
+---
+
+1. Storm Runner                   | Score: 0.57
+
+---
+
+1. Voltage Verse                  | Score: 0.54
+
+---
+
+1. Glass Cathedrals               | Score: 0.52
+
+---
+
+=============================================
+
+----- Top Recommendations: EDGE_UNKNOWN_LABELS -----
+
+=============================================
+
+1. Coffee Shop Stories            | Score: 2.63
+
+---
+
+1. Willow & Ember                 | Score: 2.61
+
+---
+
+1. Dust Road Echoes               | Score: 2.58
+
+---
+
+1. Focus Flow                     | Score: 2.57
+
+---
+
+1. Midnight Coding                | Score: 2.55
+
+---
+
+=============================================
+
+----- Top Recommendations: EDGE_BOOL_STRING_TRAP -----
+
+=============================================
+
+1. Library Rain                   | Score: 5.82
+
+---
+
+1. Midnight Coding                | Score: 5.79
+
+---
+
+1. Focus Flow                     | Score: 4.88
+
+---
+
+1. Spacewalk Thoughts             | Score: 3.59
+
+---
+
+1. Coffee Shop Stories            | Score: 2.77
+
+---
+
+=============================================
+
+----- Top Recommendations: EDGE_NONE_ACOUSTIC -----
+
+=============================================
+
+1. Coffee Shop Stories            | Score: 5.51
+
+---
+
+1. Dust Road Echoes               | Score: 2.47
+
+---
+
+1. Willow & Ember                 | Score: 2.44
+
+---
+
+1. Focus Flow                     | Score: 2.39
+
+---
+
+1. Dawn Letters                   | Score: 2.38
+
+---
+
+=============================================
+
+----- Top Recommendations: EDGE_SPARSE -----
+
+=============================================
+
+1. Midnight Coding                | Score: 1.00
+
+---
+
+1. Focus Flow                     | Score: 0.98
+
+---
+
+1. Coffee Shop Stories            | Score: 0.95
+
+---
+
+1. Library Rain                   | Score: 0.93
+
+---
+
+1. Low Tide Blues                 | Score: 0.91
+
+---
 
 ## How The System Works
 
 In production, recommenders usually blend many signals, what you played, skipped, or replayed; what similar users like; fresh or promoted titles; diversity and fairness rules; and often ML models trained on huge logs. My simulation is much simpler as it is content-based only. It never uses crowd behavior or listening history. It utilizes set weights like genre and mood matches, closeness on numeric vibe fields (especially energy, and optionally tempo, valence, danceability, plus an acoustic preference), then ranks by total score to produce top‑k suggestions. The higher the score, the better the match
 
 ### Song features:
+
 id, title, artist, genre, mood, energy, tempo_bpm, valence, danceability, acousticness
 
 ### UserProfile features:
+
 favorite_genre, favorite_mood, target_energy, likes_acoustic
 
 ### What features does each Song use?
+
 Each Song is a small bundle of metadata + vibe numbers (from your CSV). The dataclass fields are:
 
 Identity / display: id, title, artist
@@ -35,7 +267,6 @@ Style / vibe labels: genre, mood
 Numeric audio-style features (0–1 or BPM): energy, tempo_bpm, valence, danceability, acousticness
 
 Scoring uses genre, mood, and the numeric fields when the user prefs include matching keys (see below). Titles and artists are not part of the score; they’re for showing results.
-
 
 ### What does UserProfile store?
 
@@ -95,7 +326,6 @@ Lines 207-214
 2. Sort by score highest first. If two songs tie, lower id wins (stable, predictable ordering).
 3. Take the first k (e.g. top 5).
 
-
 ### Algorithm Recipe
 
 1. Load all tracks from data/songs.csv into a list.
@@ -117,19 +347,18 @@ Return the top k songs (and a one-line explanation of what added points).
 ### Setup
 
 1. Create a virtual environment (optional but recommended):
-
-   ```bash
+  ```bash
    python -m venv .venv
    source .venv/bin/activate      # Mac or Linux
    .venv\Scripts\activate         # Windows
-
+  ```
 2. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Run the app:
+1. Run the app:
 
 ```bash
 python -m src.main
@@ -149,25 +378,25 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
+I tested the system with several user profiles.
+These included chill, upbeat, and soft-listening profiles.
+I also tried edge cases, like unknown labels and missing values.
 
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+For each test, I checked the top recommendations and compared whether they felt reasonable.
+I compared outputs before and after weight changes.
+The rankings changed in meaningful ways, which showed the model responds to scoring choices.
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
+One pattern is that high-energy songs can appear often because energy has strong influence.
+Another pattern is that exact genre and mood matches get a big boost.
 
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+This creates bias toward labels that appear in the small dataset.
+Users with niche or mixed tastes may get weaker recommendations.
+Related labels (like similar mood words) may not match well because matching is strict.
+The top results can also feel repetitive because there is no diversity step.
 
 ---
 
@@ -175,13 +404,9 @@ You will go deeper on this in your model card.
 
 Read and complete `model_card.md`:
 
-[**Model Card**](model_card.md)
+**[Model Card](model_card.md)**
 
-Write 1 to 2 paragraphs here about what you learned:
-
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
-
+I learned that even a simple recommender can feel useful when user preferences are clear. Through this project, I learned that weight choices matter a lot, because small changes can reshuffle rankings greatly. One thing that surprised me was how confident the model can look even with weak or messy inputs. That made me see how easy it is for a system to hide bias behind clean-looking results. This changed how I think about music apps. Now, I'll pay more attention to data quality, diversity, and explanation, not just accuracy. If I were to extend this project, I would definetly add more songs and more adaptable personalization from user feedback when they like and skip songs.
 
 ---
 
@@ -289,4 +514,6 @@ A few sentences about what you learned:
 - What surprised you about how your system behaved
 - How did building this change how you think about real music recommenders
 - Where do you think human judgment still matters, even if the model seems "smart"
+
+```
 

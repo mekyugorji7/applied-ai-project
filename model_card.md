@@ -2,110 +2,90 @@
 
 ## 1. Model Name  
 
-Give your model a short, descriptive name.  
-Example: **VibeFinder 1.0**  
+MyVibe v1.0
 
 ---
 
 ## 2. Intended Use  
 
-Describe what your recommender is designed to do and who it is for. 
+Goal / Task: This recommender suggests songs a user might like based on their stated preferences.
 
-Prompts:  
+It assumes users can describe their taste with a few traits, like genre, mood, and energy.
 
-- What kind of recommendations does it generate  
-- What assumptions does it make about the user  
-- Is this for real users or classroom exploration  
+Intended use: quick music suggestions for experiments and demos.
+Not intended use: medical, mental health, hiring, legal, or other high-stakes decisions.
+It is also not meant to fully replace real streaming recommendation systems.
 
 ---
 
 ## 3. How the Model Works  
 
-Explain your scoring approach in simple language.  
+The model compares each song to a user profile.
+It uses genre, mood, energy, tempo, valence, danceability, and acousticness.
 
-Prompts:  
+If genre or mood matches, the song gets extra points.
+For numeric traits, songs get more points when they are close to the user preference.
+All points are added into one final score, then songs are ranked from highest to lowest.
 
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
-
-Avoid code here. Pretend you are explaining the idea to a friend who does not program.
+I adjusted the scoring weights so energy has more effect and genre has a bit less effect than before.
 
 ---
 
 ## 4. Data  
 
-Describe the dataset the model uses.  
+The catalog has 20 songs.
+It includes genres like pop, rock, jazz, hip-hop, lofi, ambient, EDM, and acoustic.
+Moods include calm, happy, sad, energetic, and mellow.
 
-Prompts:  
-
-- How many songs are in the catalog  
-- What genres or moods are represented  
-- Did you add or remove data  
-- Are there parts of musical taste missing in the dataset  
+The dataset is small, so many tastes are missing.
+It has limited artist variety and does not include lyrics, release year, language, or listening history.
+I did not add new songs in this version.
 
 ---
 
 ## 5. Strengths  
 
-Where does your system seem to work well  
+The model works best for users with clear and simple preferences.
+It performs well when genre and mood are specific.
+It also does a good job matching overall energy level.
 
-Prompts:  
-
-- User types for which it gives reasonable results  
-- Any patterns you think your scoring captures correctly  
-- Cases where the recommendations matched your intuition  
+In tests, chill profiles often got lofi or ambient songs near the top.
+Upbeat profiles often got pop or dance tracks near the top.
+These results matched my expectations.
 
 ---
 
 ## 6. Limitations and Bias 
 
-Where the system struggles or behaves unfairly. 
+One pattern is that high-energy songs can appear often because energy has strong influence.
+Another pattern is that exact genre and mood matches get a big boost.
 
-Prompts:  
-
-- Features it does not consider  
-- Genres or moods that are underrepresented  
-- Cases where the system overfits to one preference  
-- Ways the scoring might unintentionally favor some users  
-
----
+This creates bias toward labels that appear in the small dataset.
+Users with niche or mixed tastes may get weaker recommendations.
+Related labels (like similar mood words) may not match well because matching is strict.
+The top results can also feel repetitive because there is no diversity step.
 
 ## 7. Evaluation  
 
-How you checked whether the recommender behaved as expected. 
+I tested the system with several user profiles.
+These included chill, upbeat, and soft-listening profiles.
+I also tried edge cases, like unknown labels and missing values.
 
-Prompts:  
+For each test, I checked the top recommendations and compared whether they felt reasonable.
+I compared outputs before and after weight changes.
+The rankings changed in meaningful ways, which showed the model responds to scoring choices.
 
-- Which user profiles you tested  
-- What you looked for in the recommendations  
-- What surprised you  
-- Any simple tests or comparisons you ran  
-
-No need for numeric metrics unless you created some.
-
----
 
 ## 8. Future Work  
 
-Ideas for how you would improve the model next.  
+Ideas for how I would improve the model next:
 
-Prompts:  
-
-- Additional features or preferences  
-- Better ways to explain recommendations  
-- Improving diversity among the top results  
-- Handling more complex user tastes  
+- Add more songs and broader genres to reduce bias from small data.
+- Add a diversity rule so the top results are less repetitive.
+- Show simple explanations for each recommendation, like "matched your mood and energy."
 
 ---
 
 ## 9. Personal Reflection  
 
-A few sentences about your experience.  
-
-Prompts:  
-
-- What you learned about recommender systems  
-- Something unexpected or interesting you discovered  
-- How this changed the way you think about music recommendation apps  
+I learned that even a simple recommender can feel useful when user preferences are clear. Through this project, I learned that weight choices matter a lot, because small changes can reshuffle rankings greatly. One thing that surprised me was how confident the model can look even with weak or messy inputs. That made me see how easy it is for a system to hide bias behind clean-looking results. This changed how I think about music apps. Now, I'll pay more attention to data quality, diversity, and explanation, not just accuracy. If I were to extend this project, I would definetly add more songs and more adaptable personalization from user feedback when they like and skip songs.
