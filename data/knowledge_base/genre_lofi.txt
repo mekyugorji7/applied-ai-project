@@ -1,0 +1,7 @@
+Lo-fi hip-hop (lofi) is a genre characterized by deliberately imperfect, warm audio aesthetics drawn from vintage recording techniques. The genre typically occupies a BPM range of 60–90, with most tracks sitting between 70 and 85 BPM to maintain a relaxed, unhurried feel. The slow tempo creates a dreamlike, contemplative atmosphere ideal for passive listening.
+
+Energy levels in lofi tracks are consistently low, typically between 0.30 and 0.55 on a normalized 0–1 scale. Acousticness values run high — usually 0.65 to 0.95 — owing to the liberal use of sampled acoustic instruments, piano chords, and guitar loops. Danceability is moderate (0.50–0.70), reflecting a gentle groove rather than a driving beat. Valence tends toward neutral-positive, around 0.50–0.68, evoking nostalgia rather than exuberance.
+
+Characteristic instruments include muted electric piano, jazz guitar chords played through a lo-fi filter, soft brushed snare drums, warm upright bass samples, and the iconic vinyl crackle layer that masks digital clarity and adds organic texture. Occasional rain ambience, coffee shop noise, or lo-fi reverb tails further define the sonic signature.
+
+Common moods evoked include chill, focused, nostalgic, and dreamy. The genre is deeply associated with studying, late-night reading, creative work, and gentle background accompaniment. Listener use cases span student productivity, meditation transitions, background scoring for art streams, and winding down before sleep. Lofi works best when the listener wants sonic company without cognitive interruption.

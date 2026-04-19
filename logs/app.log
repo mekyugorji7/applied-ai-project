@@ -1,0 +1,218 @@
+2026-04-19 16:28:51 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from /Users/mekyugorji/applied-ai-project/tests/../data/knowledge_base
+2026-04-19 16:28:51 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic', top_k=3) → ['mood_chill.txt', 'genre_lofi.txt', 'mood_relaxed.txt']
+2026-04-19 16:28:51 | DEBUG    | myVibe.rag | retrieve('ambient energy low', top_k=2) → ['genre_ambient.txt', 'mood_chill.txt']
+2026-04-19 16:28:51 | DEBUG    | myVibe.rag | retrieve('pop happy upbeat dance', top_k=5) → ['genre_indie_pop.txt', 'mood_happy.txt', 'genre_rnb.txt', 'genre_pop.txt', 'genre_rock.txt']
+2026-04-19 16:28:51 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic vinyl studying', top_k=3) → ['genre_lofi.txt', 'mood_chill.txt', 'mood_focused.txt']
+2026-04-19 16:28:51 | DEBUG    | myVibe.rag | retrieve('ambient very low energy sparse slow sleep', top_k=3) → ['genre_ambient.txt', 'mood_chill.txt', 'genre_synthwave.txt']
+2026-04-19 16:28:51 | DEBUG    | myVibe.rag | retrieve('lofi chill low energy calm slow tempo relaxed BPM acoustic o', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_lofi.txt']
+2026-04-19 16:28:51 | DEBUG    | myVibe.rag | retrieve('low energy calm', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_rock.txt']
+2026-04-19 16:29:36 | INFO     | myVibe.main | Loaded 20 songs from data/songs.csv
+2026-04-19 16:29:36 | DEBUG    | myVibe.gemini_client | Loaded .env from /Users/mekyugorji/applied-ai-project/.env
+2026-04-19 16:29:37 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from data/knowledge_base
+2026-04-19 16:29:38 | INFO     | myVibe.gemini_client | Gemini client ready (model=gemini-2.5-flash).
+2026-04-19 16:29:38 | INFO     | myVibe.pipeline | Pipeline ready — catalog: 20 songs | KB: 23 docs | Gemini: enabled
+2026-04-19 16:29:38 | INFO     | myVibe.pipeline | Pipeline.run — genre=lofi, mood=chill, energy=0.42
+2026-04-19 16:29:38 | DEBUG    | myVibe.pipeline | Top-5 scored: Midnight Coding(5.84), Library Rain(5.73), Focus Flow(4.83), Spacewalk Thoughts(4.43), Coffee Shop Stories(3.67)
+2026-04-19 16:29:38 | DEBUG    | myVibe.rag | retrieve('lofi chill low energy acoustic slow acoustic warm organic', top_k=3) → ['mood_chill.txt', 'genre_lofi.txt', 'mood_relaxed.txt']
+2026-04-19 16:29:38 | INFO     | myVibe.pipeline | RAG retrieved: mood_chill.txt(0.21), genre_lofi.txt(0.20), mood_relaxed.txt(0.15)
+2026-04-19 16:29:38 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6383 chars
+2026-04-19 16:29:41 | INFO     | myVibe.gemini_client | Gemini call succeeded in 3.39s — 80 chars returned.
+2026-04-19 16:29:41 | INFO     | myVibe.pipeline | Gemini explanation generated (80 chars).
+2026-04-19 16:29:41 | INFO     | myVibe.pipeline | Pipeline completed in 3434 ms.
+2026-04-19 16:29:41 | INFO     | myVibe.main | Default pipeline run completed in 3434 ms
+2026-04-19 16:30:19 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from /Users/mekyugorji/applied-ai-project/tests/../data/knowledge_base
+2026-04-19 16:30:19 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic', top_k=3) → ['mood_chill.txt', 'genre_lofi.txt', 'mood_relaxed.txt']
+2026-04-19 16:30:19 | DEBUG    | myVibe.rag | retrieve('ambient energy low', top_k=2) → ['genre_ambient.txt', 'mood_chill.txt']
+2026-04-19 16:30:19 | DEBUG    | myVibe.rag | retrieve('pop happy upbeat dance', top_k=5) → ['genre_indie_pop.txt', 'mood_happy.txt', 'genre_rnb.txt', 'genre_pop.txt', 'genre_rock.txt']
+2026-04-19 16:30:19 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic vinyl studying', top_k=3) → ['genre_lofi.txt', 'mood_chill.txt', 'mood_focused.txt']
+2026-04-19 16:30:19 | DEBUG    | myVibe.rag | retrieve('ambient very low energy sparse slow sleep', top_k=3) → ['genre_ambient.txt', 'mood_chill.txt', 'genre_synthwave.txt']
+2026-04-19 16:30:19 | DEBUG    | myVibe.rag | retrieve('lofi chill low energy calm slow tempo relaxed BPM acoustic o', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_lofi.txt']
+2026-04-19 16:30:19 | DEBUG    | myVibe.rag | retrieve('low energy calm', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_rock.txt']
+2026-04-19 16:37:54 | DEBUG    | myVibe.gemini_client | Loaded .env from /Users/mekyugorji/applied-ai-project/.env
+2026-04-19 16:37:54 | INFO     | myVibe.pipeline | Pipeline ready — catalog: 20 songs | KB: 23 docs | Gemini: enabled
+2026-04-19 16:37:54 | INFO     | myVibe.app | Streamlit app loaded — 20 songs, Gemini=True
+2026-04-19 16:37:54 | INFO     | myVibe.app | Tab:Recommendations — running pipeline, k=5
+2026-04-19 16:37:54 | INFO     | myVibe.pipeline | Pipeline.run — genre=lofi, mood=chill, energy=0.42
+2026-04-19 16:37:54 | DEBUG    | myVibe.pipeline | Top-5 scored: Midnight Coding(5.84), Library Rain(5.73), Focus Flow(4.83), Spacewalk Thoughts(4.43), Coffee Shop Stories(3.67)
+2026-04-19 16:37:54 | INFO     | myVibe.pipeline | RAG retrieved: mood_chill.txt(0.21), genre_lofi.txt(0.20), mood_relaxed.txt(0.15)
+2026-04-19 16:37:54 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6383 chars
+2026-04-19 16:37:57 | INFO     | myVibe.pipeline | Gemini explanation generated (92 chars).
+2026-04-19 16:37:57 | INFO     | myVibe.pipeline | Pipeline completed in 2522 ms.
+2026-04-19 16:38:16 | INFO     | myVibe.app | Streamlit app loaded — 20 songs, Gemini=True
+2026-04-19 16:38:16 | INFO     | myVibe.app | Tab:Recommendations — running pipeline, k=5
+2026-04-19 16:38:16 | INFO     | myVibe.pipeline | Pipeline.run — genre=lofi, mood=chill, energy=0.42
+2026-04-19 16:38:16 | DEBUG    | myVibe.pipeline | Top-5 scored: Midnight Coding(5.59), Library Rain(5.51), Focus Flow(4.59), Spacewalk Thoughts(4.38), Coffee Shop Stories(3.49)
+2026-04-19 16:38:16 | INFO     | myVibe.pipeline | RAG retrieved: mood_chill.txt(0.21), genre_lofi.txt(0.20), mood_relaxed.txt(0.15)
+2026-04-19 16:38:16 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6383 chars
+2026-04-19 16:38:18 | INFO     | myVibe.pipeline | Gemini explanation generated (72 chars).
+2026-04-19 16:38:18 | INFO     | myVibe.pipeline | Pipeline completed in 2157 ms.
+2026-04-19 16:58:56 | INFO     | myVibe.app | Streamlit app loaded — 20 songs, Gemini=True
+2026-04-19 16:58:56 | INFO     | myVibe.app | Tab:Recommendations — running pipeline, k=5
+2026-04-19 16:58:56 | INFO     | myVibe.pipeline | Pipeline.run — genre=lofi, mood=chill, energy=0.42
+2026-04-19 16:58:56 | DEBUG    | myVibe.pipeline | Top-5 scored: Midnight Coding(5.59), Library Rain(5.51), Focus Flow(4.59), Spacewalk Thoughts(4.38), Coffee Shop Stories(3.49)
+2026-04-19 16:58:56 | INFO     | myVibe.pipeline | RAG retrieved: mood_chill.txt(0.21), genre_lofi.txt(0.20), mood_relaxed.txt(0.15)
+2026-04-19 16:58:56 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6383 chars
+2026-04-19 16:58:58 | INFO     | myVibe.pipeline | Gemini explanation generated (83 chars).
+2026-04-19 16:58:58 | INFO     | myVibe.pipeline | Pipeline completed in 2499 ms.
+2026-04-19 16:58:58 | INFO     | myVibe.app | RAG tab: calling Gemini baseline
+2026-04-19 16:59:00 | INFO     | myVibe.app | RAG tab: calling Gemini RAG-enhanced
+2026-04-19 17:46:34 | DEBUG    | myVibe.gemini_client | Loaded .env from /Users/mekyugorji/applied-ai-project/.env
+2026-04-19 17:46:35 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from data/knowledge_base
+2026-04-19 17:46:36 | ERROR    | myVibe.chat_agent | ChatMusicAgent init failed: cannot import name 'AgentExecutor' from 'langchain.agents' (/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/langchain/agents/__init__.py)
+Traceback (most recent call last):
+  File "/Users/mekyugorji/applied-ai-project/src/chat_agent.py", line 212, in __init__
+    from langchain.agents import AgentExecutor, create_tool_calling_agent
+ImportError: cannot import name 'AgentExecutor' from 'langchain.agents' (/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/langchain/agents/__init__.py)
+2026-04-19 17:49:34 | DEBUG    | myVibe.gemini_client | Loaded .env from /Users/mekyugorji/applied-ai-project/.env
+2026-04-19 17:49:34 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from data/knowledge_base
+2026-04-19 17:49:35 | INFO     | myVibe.chat_agent | ChatMusicAgent ready with 5 tools.
+2026-04-19 17:49:37 | DEBUG    | myVibe.rag | retrieve('chill for studying', top_k=2) → ['mood_chill.txt', 'genre_lofi.txt']
+2026-04-19 17:54:50 | DEBUG    | myVibe.gemini_client | Loaded .env from /Users/mekyugorji/applied-ai-project/.env
+2026-04-19 17:54:50 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from data/knowledge_base
+2026-04-19 17:54:51 | INFO     | myVibe.gemini_client | Gemini client ready (model=gemini-2.5-flash).
+2026-04-19 17:54:51 | INFO     | myVibe.pipeline | Pipeline ready — catalog: 20 songs | KB: 23 docs | Gemini: enabled
+2026-04-19 17:54:51 | INFO     | myVibe.app | Streamlit app loaded — 20 songs, Gemini=True
+2026-04-19 17:54:51 | INFO     | myVibe.app | Tab:Recommendations — running pipeline, k=5
+2026-04-19 17:54:51 | INFO     | myVibe.pipeline | Pipeline.run — genre=lofi, mood=chill, energy=0.42
+2026-04-19 17:54:51 | DEBUG    | myVibe.pipeline | Top-5 scored: Midnight Coding(5.84), Library Rain(5.73), Focus Flow(4.83), Spacewalk Thoughts(4.43), Coffee Shop Stories(3.67)
+2026-04-19 17:54:51 | DEBUG    | myVibe.rag | retrieve('lofi chill low energy acoustic slow acoustic warm organic', top_k=3) → ['mood_chill.txt', 'genre_lofi.txt', 'mood_relaxed.txt']
+2026-04-19 17:54:51 | INFO     | myVibe.pipeline | RAG retrieved: mood_chill.txt(0.21), genre_lofi.txt(0.20), mood_relaxed.txt(0.15)
+2026-04-19 17:54:51 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6383 chars
+2026-04-19 17:54:53 | INFO     | myVibe.gemini_client | Gemini call succeeded in 2.34s — 80 chars returned.
+2026-04-19 17:54:53 | INFO     | myVibe.pipeline | Gemini explanation generated (80 chars).
+2026-04-19 17:54:53 | INFO     | myVibe.pipeline | Pipeline completed in 2398 ms.
+2026-04-19 17:58:33 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from /Users/mekyugorji/applied-ai-project/tests/../data/knowledge_base
+2026-04-19 17:58:33 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic', top_k=3) → ['mood_chill.txt', 'genre_lofi.txt', 'mood_relaxed.txt']
+2026-04-19 17:58:33 | DEBUG    | myVibe.rag | retrieve('ambient energy low', top_k=2) → ['genre_ambient.txt', 'mood_chill.txt']
+2026-04-19 17:58:33 | DEBUG    | myVibe.rag | retrieve('pop happy upbeat dance', top_k=5) → ['genre_indie_pop.txt', 'mood_happy.txt', 'genre_rnb.txt', 'genre_pop.txt', 'genre_rock.txt']
+2026-04-19 17:58:33 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic vinyl studying', top_k=3) → ['genre_lofi.txt', 'mood_chill.txt', 'mood_focused.txt']
+2026-04-19 17:58:33 | DEBUG    | myVibe.rag | retrieve('ambient very low energy sparse slow sleep', top_k=3) → ['genre_ambient.txt', 'mood_chill.txt', 'genre_synthwave.txt']
+2026-04-19 17:58:33 | DEBUG    | myVibe.rag | retrieve('lofi chill low energy calm slow tempo relaxed BPM acoustic o', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_lofi.txt']
+2026-04-19 17:58:33 | DEBUG    | myVibe.rag | retrieve('low energy calm', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_rock.txt']
+2026-04-19 17:58:52 | DEBUG    | myVibe.gemini_client | Loaded .env from /Users/mekyugorji/applied-ai-project/.env
+2026-04-19 17:58:52 | DEBUG    | myVibe.gemini_client | Loaded .env from /Users/mekyugorji/applied-ai-project/.env
+2026-04-19 17:59:05 | INFO     | myVibe.pipeline | Pipeline.run — genre=lofi, mood=chill, energy=0.42
+2026-04-19 17:59:05 | INFO     | myVibe.pipeline | Pipeline.run — genre=lofi, mood=chill, energy=0.42
+2026-04-19 17:59:05 | DEBUG    | myVibe.pipeline | Top-5 scored: Midnight Coding(5.84), Library Rain(5.73), Focus Flow(4.83), Spacewalk Thoughts(4.43), Coffee Shop Stories(3.67)
+2026-04-19 17:59:05 | DEBUG    | myVibe.pipeline | Top-5 scored: Midnight Coding(5.84), Library Rain(5.73), Focus Flow(4.83), Spacewalk Thoughts(4.43), Coffee Shop Stories(3.67)
+2026-04-19 17:59:05 | DEBUG    | myVibe.rag | retrieve('lofi chill low energy acoustic slow acoustic warm organic', top_k=3) → ['mood_chill.txt', 'genre_lofi.txt', 'mood_relaxed.txt']
+2026-04-19 17:59:05 | DEBUG    | myVibe.rag | retrieve('lofi chill low energy acoustic slow acoustic warm organic', top_k=3) → ['mood_chill.txt', 'genre_lofi.txt', 'mood_relaxed.txt']
+2026-04-19 17:59:05 | INFO     | myVibe.pipeline | RAG retrieved: mood_chill.txt(0.21), genre_lofi.txt(0.20), mood_relaxed.txt(0.15)
+2026-04-19 17:59:05 | INFO     | myVibe.pipeline | RAG retrieved: mood_chill.txt(0.21), genre_lofi.txt(0.20), mood_relaxed.txt(0.15)
+2026-04-19 17:59:05 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6383 chars
+2026-04-19 17:59:05 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6383 chars
+2026-04-19 17:59:08 | INFO     | myVibe.gemini_client | Gemini call succeeded in 2.47s — 97 chars returned.
+2026-04-19 17:59:08 | INFO     | myVibe.gemini_client | Gemini call succeeded in 2.47s — 97 chars returned.
+2026-04-19 17:59:08 | INFO     | myVibe.pipeline | Gemini explanation generated (97 chars).
+2026-04-19 17:59:08 | INFO     | myVibe.pipeline | Gemini explanation generated (97 chars).
+2026-04-19 17:59:08 | INFO     | myVibe.pipeline | Pipeline completed in 2468 ms.
+2026-04-19 17:59:08 | INFO     | myVibe.pipeline | Pipeline completed in 2468 ms.
+2026-04-19 17:59:08 | INFO     | myVibe.chat_agent | ChatMusicAgent ready with 5 tools.
+2026-04-19 17:59:08 | INFO     | myVibe.chat_agent | ChatMusicAgent ready with 5 tools.
+2026-04-19 17:59:44 | INFO     | myVibe.pipeline | Pipeline.run — genre=unknown, mood=melancholic, energy=0.45
+2026-04-19 17:59:44 | INFO     | myVibe.pipeline | Pipeline.run — genre=unknown, mood=melancholic, energy=0.45
+2026-04-19 17:59:44 | DEBUG    | myVibe.pipeline | Top-5 scored: Winter Adagio(3.79), Midnight Coding(3.35), Dust Road Echoes(3.32), Focus Flow(3.28), Low Tide Blues(3.27)
+2026-04-19 17:59:44 | DEBUG    | myVibe.pipeline | Top-5 scored: Winter Adagio(3.79), Midnight Coding(3.35), Dust Road Echoes(3.32), Focus Flow(3.28), Low Tide Blues(3.27)
+2026-04-19 17:59:44 | DEBUG    | myVibe.rag | retrieve('melancholic low energy acoustic slow', top_k=3) → ['genre_ambient.txt', 'genre_classical.txt', 'genre_blues.txt']
+2026-04-19 17:59:44 | DEBUG    | myVibe.rag | retrieve('melancholic low energy acoustic slow', top_k=3) → ['genre_ambient.txt', 'genre_classical.txt', 'genre_blues.txt']
+2026-04-19 17:59:44 | INFO     | myVibe.pipeline | RAG retrieved: genre_ambient.txt(0.15), genre_classical.txt(0.15), genre_blues.txt(0.08)
+2026-04-19 17:59:44 | INFO     | myVibe.pipeline | RAG retrieved: genre_ambient.txt(0.15), genre_classical.txt(0.15), genre_blues.txt(0.08)
+2026-04-19 17:59:44 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6454 chars
+2026-04-19 17:59:44 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6454 chars
+2026-04-19 17:59:47 | INFO     | myVibe.gemini_client | Gemini call succeeded in 2.59s — 101 chars returned.
+2026-04-19 17:59:47 | INFO     | myVibe.gemini_client | Gemini call succeeded in 2.59s — 101 chars returned.
+2026-04-19 17:59:47 | INFO     | myVibe.pipeline | Gemini explanation generated (101 chars).
+2026-04-19 17:59:47 | INFO     | myVibe.pipeline | Gemini explanation generated (101 chars).
+2026-04-19 17:59:47 | INFO     | myVibe.pipeline | Pipeline completed in 2595 ms.
+2026-04-19 17:59:47 | INFO     | myVibe.pipeline | Pipeline completed in 2595 ms.
+2026-04-19 18:00:47 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from /Users/mekyugorji/applied-ai-project/tests/../data/knowledge_base
+2026-04-19 18:00:47 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic', top_k=3) → ['mood_chill.txt', 'genre_lofi.txt', 'mood_relaxed.txt']
+2026-04-19 18:00:47 | DEBUG    | myVibe.rag | retrieve('ambient energy low', top_k=2) → ['genre_ambient.txt', 'mood_chill.txt']
+2026-04-19 18:00:47 | DEBUG    | myVibe.rag | retrieve('pop happy upbeat dance', top_k=5) → ['genre_indie_pop.txt', 'mood_happy.txt', 'genre_rnb.txt', 'genre_pop.txt', 'genre_rock.txt']
+2026-04-19 18:00:47 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic vinyl studying', top_k=3) → ['genre_lofi.txt', 'mood_chill.txt', 'mood_focused.txt']
+2026-04-19 18:00:47 | DEBUG    | myVibe.rag | retrieve('ambient very low energy sparse slow sleep', top_k=3) → ['genre_ambient.txt', 'mood_chill.txt', 'genre_synthwave.txt']
+2026-04-19 18:00:47 | DEBUG    | myVibe.rag | retrieve('lofi chill low energy calm slow tempo relaxed BPM acoustic o', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_lofi.txt']
+2026-04-19 18:00:47 | DEBUG    | myVibe.rag | retrieve('low energy calm', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_rock.txt']
+2026-04-19 18:07:21 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from data/knowledge_base
+2026-04-19 18:07:21 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic', top_k=2) → ['mood_chill.txt', 'genre_lofi.txt']
+2026-04-19 18:07:21 | DEBUG    | myVibe.rag | retrieve('pop happy upbeat', top_k=2) → ['genre_indie_pop.txt', 'mood_happy.txt']
+2026-04-19 18:07:21 | DEBUG    | myVibe.rag | retrieve('ambient low energy', top_k=2) → ['genre_ambient.txt', 'mood_chill.txt']
+2026-04-19 18:07:21 | DEBUG    | myVibe.rag | retrieve('jazz smooth mellow', top_k=2) → ['genre_jazz.txt', 'mood_relaxed.txt']
+2026-04-19 18:07:21 | DEBUG    | myVibe.rag | retrieve('unknown xyz123', top_k=2) → ['mood_relaxed.txt', 'genre_metal.txt']
+2026-04-19 18:07:34 | DEBUG    | myVibe.gemini_client | Loaded .env from /Users/mekyugorji/applied-ai-project/.env
+2026-04-19 18:07:35 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from data/knowledge_base
+2026-04-19 18:07:35 | INFO     | myVibe.gemini_client | Gemini client ready (model=gemini-2.5-flash).
+2026-04-19 18:07:35 | INFO     | myVibe.pipeline | Pipeline ready — catalog: 20 songs | KB: 23 docs | Gemini: enabled
+2026-04-19 18:07:35 | WARNING  | myVibe.pipeline | Guardrail: target_energy=9.9 is outside [0.0, 1.0]; clamping.
+2026-04-19 18:07:35 | INFO     | myVibe.pipeline | Pipeline.run — genre=lofi, mood=chill, energy=1.00
+2026-04-19 18:07:35 | DEBUG    | myVibe.pipeline | Top-5 scored: Midnight Coding(2.84), Library Rain(2.70), Boneforge March(1.92), Gym Hero(1.86), Storm Runner(1.82)
+2026-04-19 18:07:35 | DEBUG    | myVibe.rag | retrieve('lofi chill high energy upbeat', top_k=3) → ['genre_lofi.txt', 'mood_chill.txt', 'genre_rnb.txt']
+2026-04-19 18:07:35 | INFO     | myVibe.pipeline | RAG retrieved: genre_lofi.txt(0.14), mood_chill.txt(0.13), genre_rnb.txt(0.09)
+2026-04-19 18:07:35 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6331 chars
+2026-04-19 18:07:38 | INFO     | myVibe.gemini_client | Gemini call succeeded in 2.41s — 95 chars returned.
+2026-04-19 18:07:38 | INFO     | myVibe.pipeline | Gemini explanation generated (95 chars).
+2026-04-19 18:07:38 | INFO     | myVibe.pipeline | Pipeline completed in 2448 ms.
+2026-04-19 18:07:38 | INFO     | myVibe.pipeline | Pipeline.run — genre=unknown, mood=unknown, energy=nan
+2026-04-19 18:07:38 | DEBUG    | myVibe.pipeline | Top-3 scored: Sunrise City(0.00), Midnight Coding(0.00), Storm Runner(0.00)
+2026-04-19 18:07:38 | DEBUG    | myVibe.rag | retrieve('low energy acoustic slow', top_k=3) → ['genre_blues.txt', 'genre_folk.txt', 'mood_relaxed.txt']
+2026-04-19 18:07:38 | INFO     | myVibe.pipeline | RAG retrieved: genre_blues.txt(0.12), genre_folk.txt(0.11), mood_relaxed.txt(0.11)
+2026-04-19 18:07:38 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6416 chars
+2026-04-19 18:07:40 | INFO     | myVibe.gemini_client | Gemini call succeeded in 2.36s — 65 chars returned.
+2026-04-19 18:07:40 | INFO     | myVibe.pipeline | Gemini explanation generated (65 chars).
+2026-04-19 18:07:40 | INFO     | myVibe.pipeline | Pipeline completed in 2362 ms.
+2026-04-19 18:07:40 | WARNING  | myVibe.pipeline | Guardrail: target_energy='loud' is not numeric; removing.
+2026-04-19 18:07:40 | INFO     | myVibe.pipeline | Pipeline.run — genre=pop, mood=unknown, energy=nan
+2026-04-19 18:07:40 | DEBUG    | myVibe.pipeline | Top-3 scored: Sunrise City(1.00), Gym Hero(1.00), Midnight Coding(0.00)
+2026-04-19 18:07:40 | DEBUG    | myVibe.rag | retrieve('pop low energy acoustic slow', top_k=3) → ['genre_indie_pop.txt', 'genre_pop.txt', 'genre_blues.txt']
+2026-04-19 18:07:40 | INFO     | myVibe.pipeline | RAG retrieved: genre_indie_pop.txt(0.13), genre_pop.txt(0.10), genre_blues.txt(0.10)
+2026-04-19 18:07:40 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6277 chars
+2026-04-19 18:07:42 | INFO     | myVibe.gemini_client | Gemini call succeeded in 2.27s — 73 chars returned.
+2026-04-19 18:07:42 | INFO     | myVibe.pipeline | Gemini explanation generated (73 chars).
+2026-04-19 18:07:42 | INFO     | myVibe.pipeline | Pipeline completed in 2272 ms.
+2026-04-19 18:07:42 | INFO     | myVibe.pipeline | Pipeline.run — genre=unknown, mood=unknown, energy=0.50
+2026-04-19 18:07:42 | DEBUG    | myVibe.pipeline | Top-3 scored: Midnight Coding(2.19), Focus Flow(2.19), Coffee Shop Stories(2.19)
+2026-04-19 18:07:42 | DEBUG    | myVibe.rag | retrieve('low energy acoustic slow acoustic warm organic', top_k=3) → ['genre_folk.txt', 'mood_relaxed.txt', 'mood_chill.txt']
+2026-04-19 18:07:42 | INFO     | myVibe.pipeline | RAG retrieved: genre_folk.txt(0.15), mood_relaxed.txt(0.13), mood_chill.txt(0.13)
+2026-04-19 18:07:42 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6316 chars
+2026-04-19 18:07:43 | WARNING  | myVibe.gemini_client | Gemini rate limit hit after 0.12s (suggested retry in 17s).
+2026-04-19 18:07:43 | INFO     | myVibe.pipeline | Gemini explanation generated (89 chars).
+2026-04-19 18:07:43 | INFO     | myVibe.pipeline | Pipeline completed in 117 ms.
+2026-04-19 18:07:43 | INFO     | myVibe.pipeline | Pipeline.run — genre=lofi, mood=unknown, energy=nan
+2026-04-19 18:07:43 | DEBUG    | myVibe.pipeline | Top-1 scored: Midnight Coding(1.00)
+2026-04-19 18:07:43 | DEBUG    | myVibe.rag | retrieve('lofi low energy acoustic slow', top_k=3) → ['genre_lofi.txt', 'mood_chill.txt', 'genre_blues.txt']
+2026-04-19 18:07:43 | INFO     | myVibe.pipeline | RAG retrieved: genre_lofi.txt(0.17), mood_chill.txt(0.11), genre_blues.txt(0.09)
+2026-04-19 18:07:43 | DEBUG    | myVibe.pipeline | Gemini prompt length: 5961 chars
+2026-04-19 18:07:43 | WARNING  | myVibe.gemini_client | Gemini rate limit hit after 0.12s (suggested retry in 17s).
+2026-04-19 18:07:43 | INFO     | myVibe.pipeline | Gemini explanation generated (89 chars).
+2026-04-19 18:07:43 | INFO     | myVibe.pipeline | Pipeline completed in 121 ms.
+2026-04-19 18:33:23 | DEBUG    | myVibe.gemini_client | Loaded .env from /Users/mekyugorji/applied-ai-project/.env
+2026-04-19 18:33:23 | INFO     | myVibe.gemini_client | Gemini client ready (model=gemini-2.5-flash).
+2026-04-19 18:33:24 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from data/knowledge_base
+2026-04-19 18:33:24 | INFO     | myVibe.pipeline | Pipeline ready — catalog: 20 songs | KB: 23 docs | Gemini: enabled
+2026-04-19 18:40:15 | INFO     | myVibe.pipeline | Pipeline.run — genre=lofi, mood=chill, energy=0.42
+2026-04-19 18:40:15 | DEBUG    | myVibe.pipeline | Top-5 scored: Midnight Coding(5.84), Library Rain(5.73), Focus Flow(4.83), Spacewalk Thoughts(4.43), Coffee Shop Stories(3.67)
+2026-04-19 18:40:15 | DEBUG    | myVibe.rag | retrieve('lofi chill low energy acoustic slow acoustic warm organic', top_k=3) → ['mood_chill.txt', 'genre_lofi.txt', 'mood_relaxed.txt']
+2026-04-19 18:40:15 | INFO     | myVibe.pipeline | RAG retrieved: mood_chill.txt(0.21), genre_lofi.txt(0.20), mood_relaxed.txt(0.15)
+2026-04-19 18:40:15 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6383 chars
+2026-04-19 18:40:18 | INFO     | myVibe.gemini_client | Gemini call succeeded in 2.33s — 80 chars returned.
+2026-04-19 18:40:18 | INFO     | myVibe.pipeline | Gemini explanation generated (80 chars).
+2026-04-19 18:40:18 | INFO     | myVibe.pipeline | Pipeline completed in 2440 ms.
+2026-04-19 18:40:18 | INFO     | myVibe.chat_agent | ChatMusicAgent ready with 5 tools.
+2026-04-19 18:41:20 | INFO     | myVibe.pipeline | Pipeline.run — genre=hip-hop, mood=aggressive, energy=0.42
+2026-04-19 18:41:20 | DEBUG    | myVibe.pipeline | Top-5 scored: Midnight Coding(3.84), Focus Flow(3.83), Library Rain(3.73), Coffee Shop Stories(3.67), Willow & Ember(3.55)
+2026-04-19 18:41:20 | DEBUG    | myVibe.rag | retrieve('hip-hop aggressive low energy acoustic slow acoustic warm or', top_k=3) → ['genre_rnb.txt', 'genre_hiphop.txt', 'genre_lofi.txt']
+2026-04-19 18:41:20 | INFO     | myVibe.pipeline | RAG retrieved: genre_rnb.txt(0.18), genre_hiphop.txt(0.15), genre_lofi.txt(0.15)
+2026-04-19 18:41:20 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6244 chars
+2026-04-19 18:41:20 | WARNING  | myVibe.gemini_client | Gemini rate limit hit after 0.20s (suggested retry in 39s).
+2026-04-19 18:41:20 | INFO     | myVibe.pipeline | Gemini explanation generated (89 chars).
+2026-04-19 18:41:20 | INFO     | myVibe.pipeline | Pipeline completed in 202 ms.
+2026-04-19 18:52:26 | DEBUG    | myVibe.gemini_client | Loaded .env from /Users/mekyugorji/applied-ai-project/.env
+2026-04-19 18:52:28 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from data/knowledge_base
+2026-04-19 19:10:23 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from /Users/mekyugorji/applied-ai-project/tests/../data/knowledge_base
+2026-04-19 19:10:23 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic', top_k=3) → ['mood_chill.txt', 'genre_lofi.txt', 'mood_relaxed.txt']
+2026-04-19 19:10:23 | DEBUG    | myVibe.rag | retrieve('ambient energy low', top_k=2) → ['genre_ambient.txt', 'mood_chill.txt']
+2026-04-19 19:10:23 | DEBUG    | myVibe.rag | retrieve('pop happy upbeat dance', top_k=5) → ['genre_indie_pop.txt', 'mood_happy.txt', 'genre_rnb.txt', 'genre_pop.txt', 'genre_rock.txt']
+2026-04-19 19:10:23 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic vinyl studying', top_k=3) → ['genre_lofi.txt', 'mood_chill.txt', 'mood_focused.txt']
+2026-04-19 19:10:23 | DEBUG    | myVibe.rag | retrieve('ambient very low energy sparse slow sleep', top_k=3) → ['genre_ambient.txt', 'mood_chill.txt', 'genre_synthwave.txt']
+2026-04-19 19:10:23 | DEBUG    | myVibe.rag | retrieve('lofi chill low energy calm slow tempo relaxed BPM acoustic o', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_lofi.txt']
+2026-04-19 19:10:23 | DEBUG    | myVibe.rag | retrieve('low energy calm', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_rock.txt']

@@ -1,3 +1,9 @@
 pandas
 pytest
 streamlit
+scikit-learn
+google-genai
+numpy
+python-dotenv
+langchain
+langchain-google-genai

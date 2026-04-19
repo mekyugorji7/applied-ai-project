@@ -1,520 +1,442 @@
-# 🎵 Music Recommender Simulation
-
-## Project Summary
-
-This project builds a small music recommender called My Vibe v1.0. It represents songs and user taste as structured features, then scores each song by how closely it matches the profile. The system ranks songs, shows top recommendations, and is tested with normal and edge-case profiles. I also evaluate strengths and limits, including bias from small data and simple scoring rules.
+# 🎵 My Vibe — AI Music Recommender
 
 ---
 
-### Screenshot for Terminal App
+## Original Project (Module 3)
 
-<img width="779" height="800" alt="MyVIbe Screenshot" src="https://github.com/user-attachments/assets/068cbf2d-2c6f-4d04-b1b1-f409eb10229b" />
-
-
-### Screenshot for Terminal Output Edge Cases
-
-=============================================
-
------ Top Recommendations: USER_PREFS_CHILL_LOFI -----
-
-=============================================
-
-1. Midnight Coding                | Score: 5.84
+**My Vibe v1.0** was a content-based music recommender built in Module 3. It represented each song as a set of numeric audio features: genre, mood, energy, BPM, valence, danceability, and acousticness, and scored every song in a 20-song catalog by measuring how closely those features matched a user's taste profile using weighted arithmetic. The system ranked all songs, returned the top-k results with a plain-English scoring explanation per song in the terminal, and was stress-tested against normal profiles and adversarial edge cases (unknown genre labels, missing fields, conflicting preferences) to identify where a pure rule-based model breaks down.
 
 ---
 
-1. Library Rain                   | Score: 5.80
+## Title and Summary
+
+**My Vibe** is an AI-powered music recommendation system that takes a user's taste profile and returns personalized song picks with a knowledge-grounded explanation, a similarity discovery panel, and a conversational chat agent that answers free-text questions about music.
+
+It matters because most recommendation systems are black boxes, they return results but don't explain why. My Vibe shows its work as every score comes with a reason, every AI explanation cites the knowledge document it drew from, and every chat agent response shows which tools it called before answering.   
+
+Built across four modules in applied AI engineering: RAG, agentic tool-use, few-shot prompting, and automated evaluation.
 
 ---
 
-1. Focus Flow                     | Score: 4.85
-
----
-
-1. Spacewalk Thoughts             | Score: 3.57
-
----
-
-1. Coffee Shop Stories            | Score: 2.72
-
----
-
-=============================================
-
------ Top Recommendations: USER_PREFS_UPBEAT_POP -----
-
-=============================================
-
-1. Sunrise City                   | Score: 5.85
-
----
-
-1. Gym Hero                       | Score: 4.75
-
----
-
-1. Rooftop Lights                 | Score: 3.70
-
----
-
-1. Voltage Verse                  | Score: 2.69
-
----
-
-1. Calle Sin Fin                  | Score: 2.69
-
----
-
-=============================================
-
------ Top Recommendations: USER_PREFS_SOFT_AMBIENT -----
-
-=============================================
-
-1. Spacewalk Thoughts             | Score: 5.91
-
----
-
-1. Library Rain                   | Score: 3.73
-
----
-
-1. Midnight Coding                | Score: 3.50
-
----
-
-1. Willow & Ember                 | Score: 2.69
-
----
-
-1. Winter Adagio                  | Score: 2.65
-
----
-
-=============================================
-
------ Top Recommendations: EDGE_CONFLICTING_AFFECT -----
-
-=============================================
-
-1. Winter Adagio                  | Score: 3.37
-
----
-
-1. Storm Runner                   | Score: 2.19
-
----
-
-1. Boneforge March                | Score: 2.07
-
----
-
-1. Gym Hero                       | Score: 2.05
-
----
-
-1. Glass Cathedrals               | Score: 1.97
-
----
-
-=============================================
-
------ Top Recommendations: EDGE_OUT_OF_RANGE -----
-
-=============================================
-
-1. Boneforge March                | Score: 3.79
-
----
-
-1. Gym Hero                       | Score: 0.60
-
----
-
-1. Storm Runner                   | Score: 0.57
-
----
-
-1. Voltage Verse                  | Score: 0.54
-
----
-
-1. Glass Cathedrals               | Score: 0.52
-
----
-
-=============================================
-
------ Top Recommendations: EDGE_UNKNOWN_LABELS -----
-
-=============================================
-
-1. Coffee Shop Stories            | Score: 2.63
-
----
-
-1. Willow & Ember                 | Score: 2.61
-
----
-
-1. Dust Road Echoes               | Score: 2.58
-
----
-
-1. Focus Flow                     | Score: 2.57
-
----
-
-1. Midnight Coding                | Score: 2.55
-
----
-
-=============================================
-
------ Top Recommendations: EDGE_BOOL_STRING_TRAP -----
-
-=============================================
-
-1. Library Rain                   | Score: 5.82
-
----
-
-1. Midnight Coding                | Score: 5.79
-
----
-
-1. Focus Flow                     | Score: 4.88
-
----
-
-1. Spacewalk Thoughts             | Score: 3.59
-
----
-
-1. Coffee Shop Stories            | Score: 2.77
-
----
-
-=============================================
-
------ Top Recommendations: EDGE_NONE_ACOUSTIC -----
-
-=============================================
-
-1. Coffee Shop Stories            | Score: 5.51
-
----
-
-1. Dust Road Echoes               | Score: 2.47
-
----
-
-1. Willow & Ember                 | Score: 2.44
-
----
-
-1. Focus Flow                     | Score: 2.39
-
----
-
-1. Dawn Letters                   | Score: 2.38
-
----
-
-=============================================
-
------ Top Recommendations: EDGE_SPARSE -----
-
-=============================================
-
-1. Midnight Coding                | Score: 1.00
-
----
-
-1. Focus Flow                     | Score: 0.98
-
----
-
-1. Coffee Shop Stories            | Score: 0.95
-
----
-
-1. Library Rain                   | Score: 0.93
-
----
-
-1. Low Tide Blues                 | Score: 0.91
-
----
-
-## How The System Works
-
-In production, recommenders usually blend many signals, what you played, skipped, or replayed; what similar users like; fresh or promoted titles; diversity and fairness rules; and often ML models trained on huge logs. My simulation is much simpler as it is content-based only. It never uses crowd behavior or listening history. It utilizes set weights like genre and mood matches, closeness on numeric vibe fields (especially energy, and optionally tempo, valence, danceability, plus an acoustic preference), then ranks by total score to produce top‑k suggestions. The higher the score, the better the match
-
-### Song features:
-
-id, title, artist, genre, mood, energy, tempo_bpm, valence, danceability, acousticness
-
-### UserProfile features:
-
-favorite_genre, favorite_mood, target_energy, likes_acoustic
-
-### What features does each Song use?
-
-Each Song is a small bundle of metadata + vibe numbers (from your CSV). The dataclass fields are:
-
-Identity / display: id, title, artist
-Style / vibe labels: genre, mood
-Numeric audio-style features (0–1 or BPM): energy, tempo_bpm, valence, danceability, acousticness
-
-Scoring uses genre, mood, and the numeric fields when the user prefs include matching keys (see below). Titles and artists are not part of the score; they’re for showing results.
-
-### What does UserProfile store?
-
-`UserProfile` is the object-oriented user model (what your tests use). It holds:
-
-`favorite_genre`
-`favorite_mood`
-`target_energy`
-`likes_acoustic`
-`target_tempo_bpm`
-`target_valence`
-`target_danceability`
-
-### How does Recommender compute a score for each song?
-
-All scoring goes through score_song_with_explanation (or score_song, which calls it). Roughly:
-
-Genre match: if the song’s genre equals favorite_genre, add 2.0 points.
-Mood match: if the song’s mood equals favorite_mood, add 1.0 point.
-Energy closeness: up to 1.0 extra points, using 1 − |song_energy − target_energy| (capped at zero).
-
-Optional extras (only if those keys exist on the prefs dict): tempo vs target_tempo_bpm, valence vs target_valence, danceability vs target_danceability, and an acoustic alignment term from likes_acoustic and the song’s acousticness.
-
-The high-level weights are declared at the top of the file (genre vs mood vs energy max, etc.).
-
+## System Diagram
+
+```mermaid
+flowchart TD
+    %% ── STATIC DATA (referenced by multiple steps) ───────────────────────
+    CSV[("🎵 songs.csv\n20 songs")]
+    KB[("📚 knowledge_base/\n23 genre + mood docs")]
+
+    %% ═══════════════════════════════════════════════════════════════════════
+    %% PATH 1 — Profile → Recommendations
+    %% ═══════════════════════════════════════════════════════════════════════
+
+    subgraph IN["📥 INPUT"]
+        direction LR
+        IN1["Preset Vibe\nChill Lofi · Pop · Ambient · Dark Focus"]
+        IN2["Profile Sliders\ngenre · mood · energy · BPM\nvalence · danceability · acoustic"]
+        IN3["JSON File Upload\noptional"]
+    end
+
+    STEP1["① VALIDATE\nvalidate_prefs\nclamp floats · coerce types · strip whitespace"]
+
+    STEP2A["② SCORE CATALOG\nscore_song × 20 songs\nweighted arithmetic per feature\ngenre +1.0 · mood +1.0 · energy · BPM\nvalence · danceability · acousticness"]
+
+    STEP2B["② RETRIEVE DOCS\nKnowledgeBase.retrieve\nTF-IDF cosine similarity\n→ top-3 relevant KB documents"]
+
+    STEP3["③ RANK\nrecommend_songs\nsort by score · return top-k\nconfidence = top1 ÷ 6.0"]
+
+    STEP4["④ BUILD PROMPT\npipeline.py\ncombine ranked songs + KB context\ninto RAG-grounded Gemini prompt"]
+
+    STEP5["⑤ GENERATE\nGemini 2.5 Flash\nproduces grounded AI explanation"]
+
+    subgraph OUT["📤 OUTPUT — Results Page"]
+        direction LR
+        OUT1["🏆 Ranked Song Cards\nscores · feature bars · reasons"]
+        OUT2["🤖 AI Explanation\ncites KB docs + audio features"]
+        OUT3["🔍 Discovery Panel\n3 songs by cosine audio similarity"]
+    end
+
+    %% ── PATH 1 FLOW ──────────────────────────────────────────────────────
+    IN --> STEP1
+    STEP1 --> STEP2A & STEP2B
+    CSV  --> STEP2A
+    KB   --> STEP2B
+    STEP2A --> STEP3
+    STEP3  --> STEP4
+    STEP2B --> STEP4
+    STEP4  --> STEP5
+    STEP3  --> OUT1
+    STEP5  --> OUT2
+    STEP3  --> OUT3
+    OUT1 & OUT2 & OUT3 --> OUT
+
+    %% ═══════════════════════════════════════════════════════════════════════
+    %% PATH 2 — Conversational Chat Agent
+    %% ═══════════════════════════════════════════════════════════════════════
+
+    subgraph CHAT["💬 PATH 2 — Chat Agent  src/chat_agent.py"]
+        direction TB
+        CI["User types a message"]
+        AG["ChatMusicAgent\nLangGraph create_react_agent\nreasoning loop"]
+        subgraph TOOLS["5 Tools available to the agent"]
+            direction LR
+            T1["search_songs"]
+            T2["get_song_details"]
+            T3["find_similar_songs"]
+            T4["score_and_recommend"]
+            T5["retrieve_knowledge"]
+        end
+        CR(["Chat response\nciting real songs + features"])
+        CI --> AG --> TOOLS
+        TOOLS --> AG
+        AG --> CR
+    end
+
+    %% ── PATH 2 DATA CONNECTIONS ──────────────────────────────────────────
+    T4 -. "reads" .-> CSV
+    T1 -. "reads" .-> CSV
+    T2 -. "reads" .-> CSV
+    T3 -. "reads" .-> CSV
+    T5 -. "reads" .-> KB
+    AG -. "calls" .-> STEP5
 ```
 
-WEIGHT_GENRE_MATCH = 2.0
-WEIGHT_MOOD_MATCH = 1.0
-...
-WEIGHT_ENERGY_SIMILARITY_MAX = 1.0
-...
 
-```
-
-The Recommender class turns each Song into a dict and runs the same scoring:
-
-recommender.py
-Lines 207-214
-
-```
-  recommender.py
-  Lines 207-214
-      def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
-        prefs = _profile_to_prefs(user)
-        ranked: List[Tuple[Song, float]] = []
-        for song in self.songs:
-            s = score_song(_song_to_dict(song), prefs)
-            ranked.append((song, s))
-        ranked.sort(key=lambda x: (-x[1], x[0].id))
-        return [s for s, _ in ranked[:k]]
-```
-
-### How do you choose which songs to recommend?
-
-1. Score every song in the catalog (one pass).
-2. Sort by score highest first. If two songs tie, lower id wins (stable, predictable ordering).
-3. Take the first k (e.g. top 5).
-
-### Algorithm Recipe
-
-1. Load all tracks from data/songs.csv into a list.
-2. Set the user’s targets (genre, mood, energy, acoustic preference, and optionally tempo / valence / danceability if you include them).
-3. For each song, add points:
-  - +2 if its genre matches your favorite genre
-  - +1 if its mood matches your favorite mood
-  - Up to +1 for how close its energy is to your target (closer = more points)
-  - Up to +0.5 each for tempo, valence, and danceability
-  - Up to +0.5 for acoustic fit (rewards higher acousticness if you like acoustic, lower if you don’t)
-4. Sort songs by total score (highest first). If there’s a tie, lower id wins.
-
-Return the top k songs (and a one-line explanation of what added points).
 
 ---
 
-## Getting Started
+## Architecture Overview
 
-### Setup
+The system is organized in five layers, each with a distinct job.
 
-1. Create a virtual environment (optional but recommended):
-  ```bash
-   python -m venv .venv
-   source .venv/bin/activate      # Mac or Linux
-   .venv\Scripts\activate         # Windows
-  ```
-2. Install dependencies
+**User Input** — The profile builder is the entry point. Users pick a preset vibe (Chill Lofi, Upbeat Pop, Soft Ambient, Dark Focus) or configure sliders manually across seven dimensions: genre, mood, energy, BPM, valence, danceability, and acoustic preference. They can also upload a JSON profile file. All inputs flow through `validate_prefs()` — a guardrail function that clamps out-of-range floats, coerces type mismatches, strips whitespace, and logs warnings — before anything else happens.
+
+**Data Layer** — Two static data sources: `data/songs.csv` holds 20 songs with fully numeric audio features, and `data/knowledge_base/` holds 23 plain-text documents (one per genre and mood) written to be retrievable by keyword search. No database, no external service — both load from disk at startup.
+
+**Core Recommender** — `score_song()` applies weighted arithmetic across all features: discrete matches (genre, mood) award full points and continuous features (energy, BPM, valence, danceability, acousticness) award partial points based on proximity to the target. `recommend_songs()` scores the entire catalog and returns the top-k sorted by score. This layer is entirely deterministic — no randomness, no API.
+
+**RAG + AI Layer** — The pipeline fits a TF-IDF vectorizer over the 23 KB documents at startup. When a profile arrives, it constructs a text query from the numeric values ("lofi chill low energy acoustic") and retrieves the 3 most cosine-similar documents. Those documents are inserted into a structured Gemini prompt alongside the ranked song list, grounding the AI explanation in real genre/mood knowledge. `GeminiClient` wraps the `google-genai` SDK with graceful degradation — if no API key is present, every call returns a clear placeholder message instead of crashing.
+
+**LangChain Chat Agent** — `ChatMusicAgent` uses LangGraph's `create_react_agent` with 5 tools: `search_songs`, `get_song_details`, `find_similar_songs`, `score_and_recommend`, and `retrieve_knowledge`. When the user types a free-text message, the agent decides which tools to call, calls them in sequence, and synthesizes a response citing real catalog data. Tool calls are captured and rendered in a UI expander so the reasoning is always visible.
+
+**Evaluation** — `scripts/evaluate.py` defines 8 test profiles (3 primary with clear genre/mood targets and 5 edge cases covering conflicting preferences, unknown labels, type coercion traps, and sparse input) and runs each through the recommender with explicit pass/fail criteria. 22 `pytest` tests cover the scoring logic, RAG retrieval precision, and the full evaluation harness.
+
+---
+
+## Setup Instructions
+
+### 1. Clone the repo
+
+```bash
+git clone <your-repo-url>
+cd applied-ai-project
+```
+
+### 2. Create a virtual environment
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate        # macOS / Linux
+.venv\Scripts\activate           # Windows
+```
+
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-1. Run the app:
+### 4. Add your Gemini API key
 
-```bash
-python -m src.main
+Create a `.env` file in the project root:
+
+```
+GEMINI_API_KEY=your_actual_key_here
 ```
 
-### Running Tests
+Get a free key at [aistudio.google.com](https://aistudio.google.com). The app runs without a key — AI explanation and chat features display a fallback message instead of crashing.
 
-Run the starter tests with:
+### 5. Run the app
 
 ```bash
-pytest
+streamlit run app.py
 ```
 
-You can add more tests in `tests/test_recommender.py`.
+Open `http://localhost:8501`. The landing page is the profile builder — pick a preset or configure sliders, then click **Find My Music**. Results, AI explanation, similarity discovery, and the chat agent all appear on the same page. Click **Edit profile** to return to the builder.
+
+### 6. Run tests
+
+```bash
+pytest tests/ -v                 # 22 unit tests
+python scripts/evaluate.py       # 8-profile evaluation report
+```
 
 ---
 
-## Experiments You Tried
+## Sample Interactions
 
-I tested the system with several user profiles.
-These included chill, upbeat, and soft-listening profiles.
-I also tried edge cases, like unknown labels and missing values.
+### Interaction 1 — Chill Lofi Profile
 
-For each test, I checked the top recommendations and compared whether they felt reasonable.
-I compared outputs before and after weight changes.
-The rankings changed in meaningful ways, which showed the model responds to scoring choices.
+**Input (via profile form):**
+
+```
+Genre: lofi  |  Mood: chill  |  Energy: 0.42  |  BPM: 78  |  Valence: 0.58  |  Acoustic: yes
+```
+
+**Recommender output:**
+
+```
+#1  Midnight Coding — LoRoom           score 5.84 / 6.00  (genre match  mood match  energy 0.42)
+#2  Library Rain — Paper Lanterns      score 5.73 / 6.00  (genre match  mood match  energy 0.35)
+#3  Focus Flow — LoRoom               score 4.83 / 6.00  (genre match  energy 0.40)
+#4  Spacewalk Thoughts — Orbit Bloom  score 4.43 / 6.00  (mood match  energy 0.28)
+#5  Coffee Shop Stories — Slow Stereo score 3.67 / 6.00  (energy close)
+```
+
+**AI explanation (RAG-grounded, excerpt):**
+
+> *"These lo-fi tracks align with your preference for low-energy acoustic listening. Midnight Coding and Library Rain both sit in the 72–78 BPM range characteristic of lo-fi hip-hop — a tempo shown in psychoacoustic research to reduce cognitive load. Their acousticness scores above 0.70 reinforce the organic warmth that defines the genre, and their valence values near 0.55 reflect the bittersweet emotional quality that makes lo-fi effective for sustained focus."*
+
+**Discovery panel** — songs with similar audio DNA to Midnight Coding (not in your top picks):
+
+```
+Willow & Ember — folk      energy 0.31   match 77%
+Low Tide Blues — blues     energy 0.33   match 72%
+Dust Road Echoes — country energy 0.55   match 66%
+```
 
 ---
 
-## Limitations and Risks
+### Interaction 2 — Upbeat Pop Profile
 
-One pattern is that high-energy songs can appear often because energy has strong influence.
-Another pattern is that exact genre and mood matches get a big boost.
+**Input:**
 
-This creates bias toward labels that appear in the small dataset.
-Users with niche or mixed tastes may get weaker recommendations.
-Related labels (like similar mood words) may not match well because matching is strict.
-The top results can also feel repetitive because there is no diversity step.
+```
+Genre: pop  |  Mood: happy  |  Energy: 0.85  |  BPM: 120  |  Acoustic: no
+```
+
+**Recommender output:**
+
+```
+#1  Sunrise City — Neon Echo       score 5.33 / 6.00  (genre match  mood match  energy 0.82)
+#2  Gym Hero — Max Pulse           score 4.21 / 6.00  (genre match  energy 0.93)
+#3  Rooftop Lights — Indigo Parade score 4.12 / 6.00  (genre match  mood match  energy 0.76)
+#4  Voltage Verse — Kai Cipher     score 3.19 / 6.00  (energy close)
+#5  Calle Sin Fin — Nova Ritmo     score 3.14 / 6.00  (energy close)
+```
+
+**Confidence:** 0.89 — top-1 vs top-2 gap of 1.12 pts, meaning the system has high certainty in its top pick.
+
+---
+
+### Interaction 3 — Sparse Profile (no genre or mood)
+
+**Input:**
+
+```
+Energy: 0.45  |  Valence: 0.30  |  Acoustic: no   (no genre or mood specified)
+```
+
+**Recommender output:**
+
+```
+#1  Midnight Coding — LoRoom       score 2.46
+#2  Dust Road Echoes — Clay Mercer score 2.43
+#3  Glass Cathedrals — Null Trace  score 2.38
+```
+
+Without genre and mood, the system loses up to 2.0 pts of possible score. Confidence drops to 0.41 and the gap between candidates is only 0.08 pts. The system still returns results rather than crashing, but the low scores and narrow spread are direct signals that more profile information would meaningfully improve the output.
+
+---
+
+### Interaction 4 — Chat Agent
+
+**User message:** `"recommend something chill for studying"`
+
+**Agent tool calls (shown in UI expander):**
+
+```
+→ retrieve_knowledge("chill studying focus low energy")
+→ score_and_recommend(genre="lofi", mood="chill", energy_level="low")
+```
+
+**Agent response (excerpt):**
+
+> *"For a focused study session, I'd recommend Library Rain by Paper Lanterns. At 72 BPM with an energy score of 0.35 and acousticness of 0.81, it sits in the psychoacoustically optimal range for sustained concentration. Midnight Coding by LoRoom is another strong pick — 78 BPM, energy 0.42 — offering slightly more presence if you find very quiet music distracting. Both have valence near 0.55, the bittersweet quality that reduces emotional arousal without inducing sadness."*
+
+---
+
+## Design Decisions
+
+### Why weighted arithmetic instead of a neural recommender?
+
+The catalog has 20 songs — far too small for any learned model to generalize. Weighted arithmetic scoring is fully deterministic, every recommendation comes with an exact reason ("genre match +1.0, energy closeness +1.84"), and the weights are easy to tune and explain. A neural approach would add significant complexity, require far more data, and produce a black box for a problem that simply doesn't require one.
+
+### Why TF-IDF for RAG instead of embeddings?
+
+The knowledge base is 23 short plain-text documents with dense genre/mood vocabulary. TF-IDF excels at keyword-rich retrieval on small corpora, requires no API calls, runs entirely offline, and is deterministic, meaning RAG retrieval tests are reproducible without mocking. The trade-off is that TF-IDF misses semantic synonyms (like "melancholy" vs "sad"). For a 23-doc set, that cost is acceptable.
+
+### Why LangChain + LangGraph for the chat agent instead of a raw Gemini call?
+
+A single Gemini call cannot look up catalog data, retrieve KB documents, or compute similarity scores — it would have to hallucinate all of them. LangGraph's `create_react_agent` gives the model genuine tool-calling capability: it reasons about what it needs, calls the appropriate tools, and synthesizes a grounded response. Tool calls are captured and rendered in the UI, making reasoning visible rather than opaque.
+
+### Why a profile-centric single-page UI instead of tabs?
+
+The original tab layout scattered five views across the screen. A user had to understand "RAG Comparison", "Agent Workflow", and "Few-Shot" as distinct technical concepts before getting any recommendation value. The redesign has one job: collect a profile, return results. Every AI capability is a natural section of the results page and not something the user has to navigate to.
+
+### Trade-offs accepted
+
+
+| Decision              | Upside                                | Cost                                              |
+| --------------------- | ------------------------------------- | ------------------------------------------------- |
+| TF-IDF RAG            | No API, deterministic, fully testable | Misses semantic synonyms                          |
+| 20-song catalog       | Fast, controllable, fits in memory    | Limited genre and mood coverage                   |
+| Gemini 2.5 Flash      | Free tier, capable, fast              | Rate-limited; degrades gracefully without a key   |
+| LangGraph agent       | Observable multi-step reasoning       | ~3–6 s per chat turn vs. ~1 s for a direct prompt |
+| No persistent storage | Simple, zero privacy surface          | Profile resets on every page reload               |
+
+
+---
+
+## Testing Summary
+
+### Automated tests — 22/22 passed
+
+```
+pytest tests/   →   22 passed in 0.86s
+```
+
+
+| Test file             | What it covers                                                                      |
+| --------------------- | ----------------------------------------------------------------------------------- |
+| `test_recommender.py` | Scoring correctness, sort order, explanation strings                                |
+| `test_rag.py`         | KB loading, retrieval count and structure, score ordering, genre document surfacing |
+| `test_evaluate.py`    | All 8 profiles pass/fail, top-1 score thresholds, zero unhandled exceptions         |
+
+
+### Evaluation harness — 8/8 profiles passed
+
+
+| Profile                                           | Top-1 Score | Result |
+| ------------------------------------------------- | ----------- | ------ |
+| Chill Lofi (genre + mood + energy)                | 5.84 / 6.00 | PASS   |
+| Upbeat Pop (genre + mood + energy)                | 5.82 / 6.00 | PASS   |
+| Soft Ambient (genre + mood + energy)              | 5.89 / 6.00 | PASS   |
+| Edge: Conflicting affect (happy mood, low energy) | 3.15 / 6.00 | PASS   |
+| Edge: Unknown genre + mood labels                 | 3.53 / 6.00 | PASS   |
+| Edge: likes_acoustic passed as string "True"      | 5.77 / 6.00 | PASS   |
+| Edge: likes_acoustic = None                       | 5.49 / 6.00 | PASS   |
+| Edge: Sparse profile (energy only)                | 2.00 / 6.00 | PASS   |
+
+
+**Average top-1 score across all 8 profiles: 4.69 / 6.00**
+
+### What worked
+
+- **Scoring engine:** Produced correct rankings on all three primary profiles before any tuning. Predictable enough that the first implementation was essentially correct.
+- **Graceful degradation:** Removing the API key disables AI features without crashing anything. Bad inputs — strings where floats are expected, out-of-range values, None — are all caught at the `validate_prefs()` guardrail layer and logged with the reason.
+- **RAG retrieval:** 80% precision (4/5 test queries returned the correct genre document at rank 1). Fully deterministic and reproducible across runs.
+- **Chat agent:** Successfully calls multiple tools in sequence before answering, and never invented a song title in any test interaction.
+
+### What didn't work / was harder than expected
+
+- **LangChain version fragmentation:** `AgentExecutor` and `create_tool_calling_agent` — the standard imports in every tutorial — were removed in LangChain 1.x. The API moved to LangGraph's `create_react_agent`. This cost several hours and was poorly documented. The lesson: LLM framework APIs move faster than their documentation.
+- **Gemini content format:** The LangChain-wrapped Gemini model returns message content as a list of typed dicts rather than a plain string. The chat panel displayed raw Python objects until a `_extract_text()` normalizer was added.
+- **RAG lofi miss:** On the query "lofi chill acoustic", TF-IDF ranked `mood_chill.txt` above `genre_lofi.txt` because the mood term had higher IDF weight in this corpus. Weighting genre tokens more heavily would fix it, but wasn't worth the added complexity for 23 documents.
+
+### Confidence scoring
+
+Confidence is `top_score / 6.0` (proportion of the theoretical maximum):
+
+- Full profile (genre + mood + energy): **avg 0.73** — strong, well-separated picks
+- Sparse profile (energy only): **0.33** — correctly low; the system signals it is guessing
+- Top-1 vs top-2 score gap on named profiles: **0.14–1.12 pts** — larger gaps mean higher certainty in the top pick
 
 ---
 
 ## Reflection
 
-Read and complete `model_card.md`:
+**Grounding matters more than model capability.** When Gemini received a raw song list with no context, it produced generic, vague explanations. When the same prompt included retrieved knowledge base documents — concrete facts about BPM ranges, acousticness, and psychoacoustic effects — the explanations became specific and accurate. The model's capability didn't change. What changed was the quality of the information it was given to work with. RAG is less about making a smarter model and more about making sure the model has what it needs before it speaks.
 
-**[Model Card](model_card.md)**
+**Observability is not a nice-to-have.** The shift from a single Gemini call to a LangGraph agent with visible tool calls felt like the difference between trusting a result and understanding it. When the agent calls `retrieve_knowledge()` then `score_and_recommend()` before answering, you can see exactly why it said what it said. That traceability is what makes an AI system debuggable — and debuggability is what makes it trustworthy enough to actually use.
 
-I learned that even a simple recommender can feel useful when user preferences are clear. Through this project, I learned that weight choices matter a lot, because small changes can reshuffle rankings greatly. One thing that surprised me was how confident the model can look even with weak or messy inputs. That made me see how easy it is for a system to hide bias behind clean-looking results. This changed how I think about music apps. Now, I'll pay more attention to data quality, diversity, and explanation, not just accuracy. If I were to extend this project, I would definetly add more songs and more adaptable personalization from user feedback when they like and skip songs.
+**Testing AI systems requires a clean separation.** All 22 automated tests target deterministic behavior — they never call the Gemini API. This makes the suite fast, stable, and reproducible. Testing the AI layer is a different problem: it requires defining qualitative criteria ("does the explanation cite BPM?") and checking them through human review. Trying to write automated assertions for non-deterministic text generation produces brittle tests that break whenever the model changes.
 
----
+**What I'd do differently with more time:**
 
-## 7. `model_card_template.md`
+- Add semantic embeddings alongside TF-IDF to catch synonym mismatches in RAG retrieval
+- Expand the catalog to 200+ songs so coverage across genres and moods is more meaningful
+- Add session persistence so profiles survive page reloads
+- Define a structured output schema for Gemini responses so the UI can highlight the specific features the model cited
 
-Combines reflection and model card framing from the Module 3 guidance. :contentReference[oaicite:2]{index=2}  
+**The honest takeaway:** This project demonstrates that a useful, explainable, and testable recommendation system doesn't require a large dataset, a GPU, or a complex ML pipeline. The AI is one component surrounded by deterministic logic, input validation, retrieval infrastructure, and automated tests. That surrounding structure is what makes the AI component reliable.  
+  
 
-```markdown
-# 🎧 Model Card - Music Recommender Simulation
-
-## 1. Model Name
-
-Give your recommender a name, for example:
-
-> VibeFinder 1.0
 
 ---
 
-## 2. Intended Use
-
-- What is this system trying to do
-- Who is it for
-
-Example:
-
-> This model suggests 3 to 5 songs from a small catalog based on a user's preferred genre, mood, and energy level. It is for classroom exploration only, not for real users.
-
----
-
-## 3. How It Works (Short Explanation)
-
-Describe your scoring logic in plain language.
-
-- What features of each song does it consider
-- What information about the user does it use
-- How does it turn those into a number
-
-Try to avoid code in this section, treat it like an explanation to a non programmer.
-
----
-
-## 4. Data
-
-Describe your dataset.
-
-- How many songs are in `data/songs.csv`
-- Did you add or remove any songs
-- What kinds of genres or moods are represented
-- Whose taste does this data mostly reflect
-
----
-
-## 5. Strengths
-
-Where does your recommender work well
-
-You can think about:
-- Situations where the top results "felt right"
-- Particular user profiles it served well
-- Simplicity or transparency benefits
-
----
-
-## 6. Limitations and Bias
-
-Where does your recommender struggle
-
-Some prompts:
-- Does it ignore some genres or moods
-- Does it treat all users as if they have the same taste shape
-- Is it biased toward high energy or one genre by default
-- How could this be unfair if used in a real product
-
----
-
-## 7. Evaluation
-
-How did you check your system
-
-Examples:
-- You tried multiple user profiles and wrote down whether the results matched your expectations
-- You compared your simulation to what a real app like Spotify or YouTube tends to recommend
-- You wrote tests for your scoring logic
-
-You do not need a numeric metric, but if you used one, explain what it measures.
-
----
-
-## 8. Future Work
-
-If you had more time, how would you improve this recommender
-
-Examples:
-
-- Add support for multiple users and "group vibe" recommendations
-- Balance diversity of songs instead of always picking the closest match
-- Use more features, like tempo ranges or lyric themes
-
----
-
-## 9. Personal Reflection
-
-A few sentences about what you learned:
-
-- What surprised you about how your system behaved
-- How did building this change how you think about real music recommenders
-- Where do you think human judgment still matters, even if the model seems "smart"
+## Project Structure
 
 ```
+applied-ai-project/
+├── app.py                        # Streamlit frontend (profile-centric, single page)
+├── data/
+│   ├── songs.csv                 # 20-song catalog with numeric audio features
+│   └── knowledge_base/           # 23 genre + mood .txt docs (RAG source)
+│       ├── genre_lofi.txt
+│       ├── genre_ambient.txt
+│       ├── mood_chill.txt
+│       └── ...
+├── src/
+│   ├── recommender.py            # Core scorer + ranker (deterministic, no API)
+│   ├── pipeline.py               # Integrated pipeline: score → RAG → Gemini
+│   ├── rag.py                    # TF-IDF KnowledgeBase: load, retrieve, build_context
+│   ├── gemini_client.py          # Gemini 2.5 Flash wrapper with graceful degradation
+│   ├── chat_agent.py             # LangChain agent: 5 tools + ChatMusicAgent class
+│   ├── fewshot.py                # FewShotRecommender + depth metrics
+│   ├── agent.py                  # 5-step observable MusicAgent (CLI)
+│   ├── main.py                   # CLI entry point
+│   └── logger.py                 # Structured logger
+├── scripts/
+│   └── evaluate.py               # Evaluation harness: 8 profiles, pass/fail report
+├── tests/
+│   ├── test_recommender.py       # Scoring, ranking, explanation strings
+│   ├── test_rag.py               # KB loading, retrieval structure, genre doc precision
+│   └── test_evaluate.py          # All profiles pass, top-1 thresholds, no exceptions
+├── .env                          # GEMINI_API_KEY (git-ignored)
+└── requirements.txt
+```
+
+---
+
+## CLI
+
+The original terminal interface is fully preserved:
+
+```bash
+python -m src.main                  # top-5 for the default chill lofi profile
+python -m src.main --all-profiles   # all profiles side by side
+python -m src.main --rag            # RAG before/after depth comparison
+python -m src.main --agent          # 5-step agentic workflow with logged steps
+python -m src.main --fewshot        # few-shot vs zero-shot depth comparison
+python -m src.main --evaluate       # full evaluation harness (8 profiles)
+python scripts/evaluate.py          # same evaluation run directly
+```
+
+---
+
+## Tech Stack
+
+
+| Component     | Library / Tool                            |
+| ------------- | ----------------------------------------- |
+| Frontend      | Streamlit                                 |
+| Recommender   | Pure Python                               |
+| RAG retrieval | scikit-learn (TF-IDF + cosine similarity) |
+| AI model      | Gemini 2.5 Flash via google-genai SDK     |
+| Chat agent    | LangChain + LangGraph                     |
+| Testing       | pytest                                    |
+| Data handling | pandas, numpy                             |
+| Config        | python-dotenv                             |
+
 
