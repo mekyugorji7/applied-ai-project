@@ -13,6 +13,7 @@ from src.gemini_client import GeminiClient, _resolve_api_key
 from src.rag import KnowledgeBase
 from src.pipeline import RecommendationPipeline, validate_prefs
 from src.logger import get_logger
+from src.spotify_client import SpotifyClient, _resolve_spotify_credentials
 
 log = get_logger("app")
 
@@ -75,19 +76,49 @@ def get_chat_agent():
     from src.chat_agent import ChatMusicAgent
     return ChatMusicAgent(get_songs(), get_kb(), _resolve_api_key())
 
+@st.cache_resource
+def get_spotify_client():
+    cid, csec = _resolve_spotify_credentials()
+    return SpotifyClient(cid, csec)
+
 songs   = get_songs()
 gemini  = get_gemini()
 pipeline = get_pipeline()
 
 # ── Session state init ────────────────────────────────────────────────────────
-if "profile_submitted" not in st.session_state:
-    st.session_state.profile_submitted = False
-if "user_prefs" not in st.session_state:
-    st.session_state.user_prefs = {}
-if "chat_messages" not in st.session_state:
-    st.session_state.chat_messages = []
-if "active_preset" not in st.session_state:
-    st.session_state.active_preset = "Chill Lofi"
+if "profile_submitted"   not in st.session_state: st.session_state.profile_submitted   = False
+if "user_prefs"          not in st.session_state: st.session_state.user_prefs          = {}
+if "chat_messages"       not in st.session_state: st.session_state.chat_messages       = []
+if "active_preset"       not in st.session_state: st.session_state.active_preset       = "Chill Lofi"
+if "spotify_connected"   not in st.session_state: st.session_state.spotify_connected   = False
+if "spotify_profile"     not in st.session_state: st.session_state.spotify_profile     = {}
+if "spotify_tracks"      not in st.session_state: st.session_state.spotify_tracks      = []
+if "spotify_display"     not in st.session_state: st.session_state.spotify_display     = ""
+if "spotify_genres"      not in st.session_state: st.session_state.spotify_genres      = []
+
+# ── Spotify OAuth callback (runs before any page render) ─────────────────────
+_params = st.query_params
+if "code" in _params and not st.session_state.spotify_connected:
+    _spotify = get_spotify_client()
+    if _spotify.enabled and _spotify.handle_callback(_params["code"]):
+        with st.spinner("Analyzing your Spotify listening history…"):
+            try:
+                _data = _spotify.fetch_taste_profile()
+                st.session_state.spotify_connected = True
+                st.session_state.spotify_profile   = _data["user_prefs"]
+                st.session_state.spotify_tracks    = _data["top_tracks"]
+                st.session_state.spotify_display   = _data["display_name"]
+                st.session_state.spotify_genres    = _data["top_genres"]
+                # Auto-submit: go straight to recommendations
+                _sp_prefs = dict(_data["user_prefs"])
+                _sp_prefs["_k"] = 5
+                st.session_state.user_prefs       = validate_prefs(_sp_prefs)
+                st.session_state.profile_submitted = True
+                st.session_state.chat_messages     = []
+            except RuntimeError as _exc:
+                st.error(f"Spotify import failed: {_exc}")
+        st.query_params.clear()
+        st.rerun()
 
 PRESETS = {
     "Chill Lofi":   dict(genre="lofi",    mood="chill",       energy=0.42, bpm=78.0,  valence=0.58, dance=0.61, acoustic=True),
@@ -132,38 +163,81 @@ def show_profile_builder():
             except Exception as exc:
                 st.error(f"Could not parse profile: {exc}")
 
-    # ── Manual profile form ──────────────────────────────────────────────────
-    with st.form("profile_form"):
-        st.markdown("**Refine your profile**")
+    # ── Spotify import + manual sliders ─────────────────────────────────────
+    spotify = get_spotify_client()
+    col_sp, col_form = st.columns([1, 2], gap="large")
 
-        genre_opts = ["(any)"] + all_genres
-        mood_opts  = ["(any)"] + all_moods
+    with col_sp:
+        st.markdown("**Import from Spotify**")
+        if spotify.enabled:
+            if st.session_state.spotify_connected:
+                st.success(f"Connected as **{st.session_state.spotify_display}**")
+                st.caption(
+                    f"Analyzed {len(st.session_state.spotify_tracks)} top tracks\n\n"
+                    f"Top genres: {', '.join(g for g, _ in st.session_state.spotify_genres[:3])}"
+                )
+                with st.expander("View analyzed tracks"):
+                    st.dataframe(
+                        pd.DataFrame(st.session_state.spotify_tracks),
+                        use_container_width=True, hide_index=True,
+                    )
+                # Override p with Spotify-derived values so sliders start there
+                sp = st.session_state.spotify_profile
+                p = dict(
+                    genre=sp.get("favorite_genre", ""),
+                    mood=sp.get("favorite_mood", ""),
+                    energy=sp.get("target_energy", 0.5),
+                    bpm=sp.get("target_tempo_bpm", 90.0),
+                    valence=sp.get("target_valence", 0.6),
+                    dance=sp.get("target_danceability", 0.6),
+                    acoustic=sp.get("likes_acoustic", True),
+                )
+                if st.button("Disconnect", key="spotify_disconnect"):
+                    st.session_state.spotify_connected = False
+                    st.session_state.spotify_profile   = {}
+                    st.session_state.spotify_tracks    = []
+                    st.session_state.spotify_genres    = []
+                    st.rerun()
+            else:
+                auth_url = spotify.get_auth_url()
+                st.link_button("Connect Spotify", auth_url, use_container_width=True)
+                st.caption("Reads your top 20 tracks.\nNo data is stored.")
+        else:
+            st.info("Add `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` to `.env` to enable.")
 
-        col_a, col_b = st.columns(2)
-        fav_genre = col_a.selectbox(
-            "Favorite genre",
-            genre_opts,
-            index=genre_opts.index(p["genre"]) if p["genre"] in genre_opts else 0,
-        )
-        fav_mood = col_b.selectbox(
-            "Favorite mood",
-            mood_opts,
-            index=mood_opts.index(p["mood"]) if p["mood"] in mood_opts else 0,
-        )
+    with col_form:
+        with st.form("profile_form"):
+            st.markdown("**Refine your profile**")
+            st.caption("Spotify values are pre-filled below — adjust anything before submitting.")
 
-        target_energy  = st.slider("Energy",                    0.0, 1.0,   p["energy"],  0.01,
-                                   help="How intense and active the music should feel")
-        target_bpm     = st.slider("BPM (tempo)",               50.0, 200.0, p["bpm"],    1.0)
+            genre_opts = ["(any)"] + all_genres
+            mood_opts  = ["(any)"] + all_moods
 
-        col_c, col_d = st.columns(2)
-        target_valence = col_c.slider("Valence — sad → happy",  0.0, 1.0,   p["valence"], 0.01)
-        target_dance   = col_d.slider("Danceability",           0.0, 1.0,   p["dance"],   0.01)
+            col_a, col_b = st.columns(2)
+            fav_genre = col_a.selectbox(
+                "Favorite genre",
+                genre_opts,
+                index=genre_opts.index(p["genre"]) if p["genre"] in genre_opts else 0,
+            )
+            fav_mood = col_b.selectbox(
+                "Favorite mood",
+                mood_opts,
+                index=mood_opts.index(p["mood"]) if p["mood"] in mood_opts else 0,
+            )
 
-        likes_acoustic = st.checkbox("Prefers acoustic sound", value=p["acoustic"])
+            target_energy  = st.slider("Energy",                   0.0, 1.0,   p["energy"],  0.01,
+                                       help="How intense and active the music should feel")
+            target_bpm     = st.slider("BPM (tempo)",              50.0, 200.0, p["bpm"],    1.0)
 
-        k_songs = st.slider("Number of recommendations", 3, 10, 5)
+            col_c, col_d = st.columns(2)
+            target_valence = col_c.slider("Valence — sad → happy", 0.0, 1.0,   p["valence"], 0.01)
+            target_dance   = col_d.slider("Danceability",          0.0, 1.0,   p["dance"],   0.01)
 
-        submitted = st.form_submit_button("🎵 Find My Music", use_container_width=True, type="primary")
+            likes_acoustic = st.checkbox("Prefers acoustic sound", value=p["acoustic"])
+
+            k_songs = st.slider("Number of recommendations", 3, 10, 5)
+
+            submitted = st.form_submit_button("🎵 Find My Music", use_container_width=True, type="primary")
 
     if submitted:
         raw_prefs = {
@@ -211,6 +285,16 @@ def show_results():
         st.session_state.profile_submitted = False
         st.session_state.user_prefs = {}
         st.rerun()
+
+    # ── Spotify import banner ─────────────────────────────────────────────
+    if st.session_state.spotify_connected:
+        sp_genres_str = ", ".join(g for g, _ in st.session_state.spotify_genres[:3])
+        st.info(
+            f"Profile imported from Spotify — **{st.session_state.spotify_display}** · "
+            f"{len(st.session_state.spotify_tracks)} tracks analyzed · "
+            f"Top genres: {sp_genres_str}",
+            icon="🎧",
+        )
 
     # ── Profile summary strip ─────────────────────────────────────────────
     st.markdown("---")

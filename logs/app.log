@@ -216,3 +216,53 @@ ImportError: cannot import name 'AgentExecutor' from 'langchain.agents' (/Librar
 2026-04-19 19:10:23 | DEBUG    | myVibe.rag | retrieve('ambient very low energy sparse slow sleep', top_k=3) → ['genre_ambient.txt', 'mood_chill.txt', 'genre_synthwave.txt']
 2026-04-19 19:10:23 | DEBUG    | myVibe.rag | retrieve('lofi chill low energy calm slow tempo relaxed BPM acoustic o', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_lofi.txt']
 2026-04-19 19:10:23 | DEBUG    | myVibe.rag | retrieve('low energy calm', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_rock.txt']
+2026-04-19 20:53:54 | WARNING  | myVibe.spotify_client | spotipy not installed — Spotify integration disabled.
+2026-04-19 20:54:12 | WARNING  | myVibe.spotify_client | spotipy not installed — Spotify integration disabled.
+2026-04-19 21:19:36 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from /Users/mekyugorji/applied-ai-project/tests/../data/knowledge_base
+2026-04-19 21:19:36 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic', top_k=3) → ['mood_chill.txt', 'genre_lofi.txt', 'mood_relaxed.txt']
+2026-04-19 21:19:36 | DEBUG    | myVibe.rag | retrieve('ambient energy low', top_k=2) → ['genre_ambient.txt', 'mood_chill.txt']
+2026-04-19 21:19:36 | DEBUG    | myVibe.rag | retrieve('pop happy upbeat dance', top_k=5) → ['genre_indie_pop.txt', 'mood_happy.txt', 'genre_rnb.txt', 'genre_pop.txt', 'genre_rock.txt']
+2026-04-19 21:19:36 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic vinyl studying', top_k=3) → ['genre_lofi.txt', 'mood_chill.txt', 'mood_focused.txt']
+2026-04-19 21:19:36 | DEBUG    | myVibe.rag | retrieve('ambient very low energy sparse slow sleep', top_k=3) → ['genre_ambient.txt', 'mood_chill.txt', 'genre_synthwave.txt']
+2026-04-19 21:19:36 | DEBUG    | myVibe.rag | retrieve('lofi chill low energy calm slow tempo relaxed BPM acoustic o', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_lofi.txt']
+2026-04-19 21:19:36 | DEBUG    | myVibe.rag | retrieve('low energy calm', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_rock.txt']
+2026-04-19 21:20:12 | DEBUG    | myVibe.gemini_client | Loaded .env from /Users/mekyugorji/applied-ai-project/.env
+2026-04-19 21:20:12 | DEBUG    | myVibe.gemini_client | Loaded .env from /Users/mekyugorji/applied-ai-project/.env
+2026-04-19 21:28:15 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from /Users/mekyugorji/applied-ai-project/tests/../data/knowledge_base
+2026-04-19 21:28:15 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic', top_k=3) → ['mood_chill.txt', 'genre_lofi.txt', 'mood_relaxed.txt']
+2026-04-19 21:28:15 | DEBUG    | myVibe.rag | retrieve('ambient energy low', top_k=2) → ['genre_ambient.txt', 'mood_chill.txt']
+2026-04-19 21:28:15 | DEBUG    | myVibe.rag | retrieve('pop happy upbeat dance', top_k=5) → ['genre_indie_pop.txt', 'mood_happy.txt', 'genre_rnb.txt', 'genre_pop.txt', 'genre_rock.txt']
+2026-04-19 21:28:15 | DEBUG    | myVibe.rag | retrieve('lofi chill acoustic vinyl studying', top_k=3) → ['genre_lofi.txt', 'mood_chill.txt', 'mood_focused.txt']
+2026-04-19 21:28:15 | DEBUG    | myVibe.rag | retrieve('ambient very low energy sparse slow sleep', top_k=3) → ['genre_ambient.txt', 'mood_chill.txt', 'genre_synthwave.txt']
+2026-04-19 21:28:15 | DEBUG    | myVibe.rag | retrieve('lofi chill low energy calm slow tempo relaxed BPM acoustic o', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_lofi.txt']
+2026-04-19 21:28:15 | DEBUG    | myVibe.rag | retrieve('low energy calm', top_k=3) → ['mood_chill.txt', 'mood_relaxed.txt', 'genre_rock.txt']
+2026-04-19 21:32:10 | DEBUG    | myVibe.gemini_client | Loaded .env from /Users/mekyugorji/applied-ai-project/.env
+2026-04-19 21:32:11 | INFO     | myVibe.gemini_client | Gemini client ready (model=gemini-2.5-flash).
+2026-04-19 21:32:11 | INFO     | myVibe.rag | KnowledgeBase loaded: 23 documents from data/knowledge_base
+2026-04-19 21:32:11 | INFO     | myVibe.pipeline | Pipeline ready — catalog: 20 songs | KB: 23 docs | Gemini: enabled
+2026-04-19 21:32:28 | INFO     | myVibe.pipeline | Pipeline.run — genre=pop, mood=happy, energy=0.85
+2026-04-19 21:32:28 | DEBUG    | myVibe.pipeline | Top-5 scored: Sunrise City(5.82), Gym Hero(4.67), Rooftop Lights(4.61), Voltage Verse(3.66), Calle Sin Fin(3.62)
+2026-04-19 21:32:28 | DEBUG    | myVibe.rag | retrieve('pop happy high energy upbeat', top_k=3) → ['genre_indie_pop.txt', 'mood_happy.txt', 'genre_pop.txt']
+2026-04-19 21:32:28 | INFO     | myVibe.pipeline | RAG retrieved: genre_indie_pop.txt(0.18), mood_happy.txt(0.14), genre_pop.txt(0.11)
+2026-04-19 21:32:28 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6433 chars
+2026-04-19 21:32:30 | INFO     | myVibe.gemini_client | Gemini call succeeded in 2.32s — 85 chars returned.
+2026-04-19 21:32:30 | INFO     | myVibe.pipeline | Gemini explanation generated (85 chars).
+2026-04-19 21:32:30 | INFO     | myVibe.pipeline | Pipeline completed in 2395 ms.
+2026-04-19 21:32:30 | INFO     | myVibe.chat_agent | ChatMusicAgent ready with 5 tools.
+2026-04-19 22:00:01 | INFO     | myVibe.pipeline | Pipeline.run — genre=hip-hop, mood=happy, energy=0.78
+2026-04-19 22:00:01 | DEBUG    | myVibe.pipeline | Top-8 scored: Voltage Verse(4.27), Sunrise City(4.21), Rooftop Lights(4.13), Night Drive Loop(3.46), Glass Cathedrals(3.42), Calle Sin Fin(3.39), Dawn Letters(3.16), Storm Runner(3.10)
+2026-04-19 22:00:01 | DEBUG    | myVibe.rag | retrieve('hip-hop happy high energy upbeat', top_k=3) → ['genre_rnb.txt', 'genre_hiphop.txt', 'mood_happy.txt']
+2026-04-19 22:00:01 | INFO     | myVibe.pipeline | RAG retrieved: genre_rnb.txt(0.23), genre_hiphop.txt(0.19), mood_happy.txt(0.10)
+2026-04-19 22:00:01 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6734 chars
+2026-04-19 22:00:02 | ERROR    | myVibe.gemini_client | Gemini call failed after 0.94s: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+2026-04-19 22:00:02 | INFO     | myVibe.pipeline | Gemini explanation generated (210 chars).
+2026-04-19 22:00:02 | INFO     | myVibe.pipeline | Pipeline completed in 941 ms.
+2026-04-19 22:59:24 | INFO     | myVibe.pipeline | Pipeline.run — genre=hip-hop, mood=happy, energy=0.78
+2026-04-19 22:59:24 | DEBUG    | myVibe.pipeline | Top-5 scored: Sunrise City(4.76), Rooftop Lights(4.75), Voltage Verse(4.48), Calle Sin Fin(3.71), Gym Hero(3.58)
+2026-04-19 22:59:24 | DEBUG    | myVibe.rag | retrieve('hip-hop happy high energy upbeat', top_k=3) → ['genre_rnb.txt', 'genre_hiphop.txt', 'mood_happy.txt']
+2026-04-19 22:59:24 | INFO     | myVibe.pipeline | RAG retrieved: genre_rnb.txt(0.23), genre_hiphop.txt(0.19), mood_happy.txt(0.10)
+2026-04-19 22:59:24 | DEBUG    | myVibe.pipeline | Gemini prompt length: 6419 chars
+2026-04-19 22:59:27 | INFO     | myVibe.gemini_client | Gemini call succeeded in 2.76s — 82 chars returned.
+2026-04-19 22:59:27 | INFO     | myVibe.pipeline | Gemini explanation generated (82 chars).
+2026-04-19 22:59:27 | INFO     | myVibe.pipeline | Pipeline completed in 2777 ms.
+2026-04-19 23:03:35 | INFO     | myVibe.main | Loaded 20 songs from data/songs.csv

@@ -119,7 +119,13 @@ The system is organized in five layers, each with a distinct job.
 
 **LangChain Chat Agent** — `ChatMusicAgent` uses LangGraph's `create_react_agent` with 5 tools: `search_songs`, `get_song_details`, `find_similar_songs`, `score_and_recommend`, and `retrieve_knowledge`. When the user types a free-text message, the agent decides which tools to call, calls them in sequence, and synthesizes a response citing real catalog data. Tool calls are captured and rendered in a UI expander so the reasoning is always visible.
 
-**Evaluation** — `scripts/evaluate.py` defines 8 test profiles (3 primary with clear genre/mood targets and 5 edge cases covering conflicting preferences, unknown labels, type coercion traps, and sparse input) and runs each through the recommender with explicit pass/fail criteria. 22 `pytest` tests cover the scoring logic, RAG retrieval precision, and the full evaluation harness.
+**Evaluation** — `scripts/evaluate.py` defines 8 test profiles (3 primary with clear genre/mood targets and 5 edge cases covering conflicting preferences, unknown labels, type coercion traps, and sparse input) and runs each through the recommender with explicit pass/fail criteria. 22 `pytest` tests cover the scoring logic, RAG retrieval precision, and the full evaluation harness. The harness and `pytest` suite call the **deterministic recommender (and RAG retrieval structure)** only—they **do not** call Gemini or the chat agent, so scores stay reproducible without live LLM dependencies.
+
+### Stretch scope (for grading clarity)
+
+- **Multi-source:** Here that means **combined catalog + knowledge base**: rankings come from weighted scoring over `songs.csv`, while **TF‑IDF retrieval** runs over the 23 KB `.txt` files only (one vector index over the KB, not a second index over songs); the chat agent can still **read both** via tools.
+- **Few-shot depth comparison:** Run from the **CLI** with `python -m src.main --fewshot` (not surfaced in the Streamlit UI).
+- **Evaluation harness:** `scripts/evaluate.py` / `python -m src.main --evaluate` invoke **`recommend_songs` on fixed profiles** and print a pass/fail summary—they **do not** exercise Gemini or agent endpoints.
 
 ---
 
@@ -313,6 +319,8 @@ python -m src.main --fewshot        # few-shot vs zero-shot depth comparison
 python -m src.main --evaluate       # full evaluation harness (8 profiles)
 python scripts/evaluate.py          # same evaluation run directly
 ```
+
+See **Stretch scope (for grading clarity)** under Architecture Overview for what “multi-source” means here, where to run few-shot, and what the evaluation harness does not call.
 
 ---
 

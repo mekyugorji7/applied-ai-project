@@ -84,10 +84,6 @@ Why LangChain + LangGraph for the chat agent instead of a raw Gemini call?
 
 A single Gemini call cannot look up catalog data, retrieve KB documents, or compute similarity scores — it would have to hallucinate all of them. LangGraph's create_react_agent gives the model genuine tool-calling capability: it reasons about what it needs, calls the appropriate tools, and synthesizes a grounded response. Tool calls are captured and rendered in the UI, making reasoning visible rather than opaque.
 
-Why a profile-centric single-page UI instead of tabs?
-
-The original tab layout scattered five views across the screen. A user had to understand "RAG Comparison", "Agent Workflow", and "Few-Shot" as distinct technical concepts before getting any recommendation value. The redesign has one job: collect a profile, return results. Every AI capability is a natural section of the results page and not something the user has to navigate to.
-
 ### Trade-offs accepted
 
 | Decision              | Upside                                | Cost                                              |
@@ -97,6 +93,10 @@ The original tab layout scattered five views across the screen. A user had to un
 | Gemini 2.5 Flash      | Free tier, capable, fast              | Rate-limited; degrades gracefully without a key   |
 | LangGraph agent       | Observable multi-step reasoning       | ~3–6 s per chat turn vs. ~1 s for a direct prompt |
 | No persistent storage | Simple, zero privacy surface          | Profile resets on every page reload               |
+
+### Stretch scope
+
+*Multi-source in this repo means combined use of the song catalog and the knowledge base, rankings are computed from `songs.csv`, TF‑IDF retrieval uses the KB documents and the chat agent can access both via tools. The Few-shot vs zero-shot comparison runs from the CLI (`python -m src.main --fewshot`) and not the Streamlit app. The evaluation harness (`scripts/evaluate.py`) runs `recommend_songs` on predefined profiles and prints pass/fail summaries, it doesn't call Gemini or the chat agent.
 
 
 ## 9. Future Work
@@ -109,14 +109,49 @@ Ideas for how I would improve the model next:
 
 ---
 
-## 10. Personal Reflection
+## 10. AI Reflection
+
+### How I used AI during development
+
+I used an AI coding assistant across design, implementation, and debugging. Early on I used it to help compare architectural options (for example, RAG versus a single unprompted model call, and where input validation should sit in the pipeline). During coding it helped scaffold repetitive pieces (Streamlit layout patterns, pytest cases, LangGraph tool wrappers) and walk through stack traces when libraries had moved APIs between versions. For documentation, I used it to tighten structure and wording in the README and this model card, then checked each technical claim against the actual code and test output so the docs stayed accurate.
+
+
+### Describe your collaboration with AI during this project. Identify one helpful and one flawed suggestion.
+
+#### A helpful suggestion
+
+The most useful recurring advice was to keep automated tests on deterministic behavior only, scoring, ranking, RAG retrieval shape, and the evaluation harness. This helped me avoid verifying exact Gemini text in `pytest`. Using stable tests that still protect the core recommender and retrieval helped a lot in testing, while qualitative checks on explanations stayed in the human review process.
+
+#### A flawed suggestion
+
+The assistant often surfaced LangChain examples from older tutorials (`AgentExecutor`, older tool-calling agent patterns) that did not match LangChain/LangGraph in this repo. Following those snippets blindly would have led to import errors or dead code paths until I cross-checked the installed versions and official migration notes. I ended up standardizing on LangGraph `create_react_agent` after reading current docs and not the outdated snippets. I have to make sure to treat AI-generated code as a draft, and then verify before I integrate.
+
+### How this connects to the system
+
+AI assistance sped up boilerplate and exploration, but it didn't remove the need to manually judge whether rankings and chat answers felt grounded for real profiles. System limitations (small catalog, strict labels, TF-IDF synonym gaps) are still rea. Where the assistant helped most was making those limitations easier to see: guardrails, evaluation profiles, and observable agent tool calls so weak inputs show up as low confidence or visible traces instead of silent failure.
+
+### What are the limitations or biases in your system?
+
+The biggest limitation is dataset size: a 20-song catalog cannot represent the full range of real listening tastes. The scoring logic also favors strong energy matches and exact genre/mood labels, which can bias results toward common labels and under-serve niche or mixed preferences. TF-IDF retrieval is deterministic and useful on a small corpus, but it can miss semantic synonyms (for example, "melancholy" vs "sad"). Because there is no diversity re-ranking step, top recommendations can also feel repetitive.
+
+### Could your AI be misused, and how would you prevent that?
+
+Yes, a user could treat the recommendations as authoritative for emotional or mental-health guidance, or assume the chat assistant is always correct because it sounds confident. To reduce misuse, this project applies scope guardrails in documentation and UX. It is explicitly framed as a demo recommender. Reliability is improved by grounding responses in retrieval + scoring tools rather than free-form generation, showing tool traces where possible, and keeping deterministic tests for core logic so failures are visible. 
+
+### What surprised you while testing your AI's reliability?
+
+The most surprising result was how quickly output quality improved when the model had grounded context. The same Gemini model that gave generic answers with a raw prompt became much more specific when given retrieved KB facts and scored recommendations. Another surprise was that the deterministic components (scoring + retrieval shape tests) were much easier to validate than generated text, which reinforced the decision to separate deterministic automated tests from qualitative AI-output review.
+
+---
+
+## 11. Personal Reflection
 
 I learned that even a simple recommender can feel useful when user preferences are clear. Through this project, I learned that weight choices matter a lot, because small changes can reshuffle rankings greatly. One thing that surprised me was how confident the model can look even with weak or messy inputs. That made me see how easy it is for a system to hide bias behind clean-looking results. This changed how I think about music apps. Now, I'll pay more attention to data quality, diversity, and explanation, not just accuracy. If I were to extend this project, I would definetly add more songs and more adaptable personalization from user feedback when they like and skip songs.
 
 
 ---
 
-## 11. Testing Summary
+## 12. Testing Summary
 
 **Automated tests:** 22/22 passed
 
@@ -169,19 +204,20 @@ Confidence is `top_score / 6.0` (proportion of the theoretical maximum):
 
 ### Reflection
 
-**Grounding matters more than model capability.** When Gemini received a raw song list with no context, it produced generic, vague explanations. When the same prompt included retrieved knowledge base documents — concrete facts about BPM ranges, acousticness, and psychoacoustic effects — the explanations became specific and accurate. The model's capability didn't change. What changed was the quality of the information it was given to work with. RAG is less about making a smarter model and more about making sure the model has what it needs before it speaks.
+**Grounding matters more than model capability:** When Gemini received a raw song list with no context, it produced generic, vague explanations. When the same prompt included retrieved knowledge base documents — concrete facts about BPM ranges, acousticness, and psychoacoustic effects — the explanations became specific and accurate. The model's capability didn't change. What changed was the quality of the information it was given to work with. RAG is less about making a smarter model and more about making sure the model has what it needs before it speaks.
 
-**Observability is not a nice-to-have.** The shift from a single Gemini call to a LangGraph agent with visible tool calls felt like the difference between trusting a result and understanding it. When the agent calls `retrieve_knowledge()` then `score_and_recommend()` before answering, you can see exactly why it said what it said. That traceability is what makes an AI system debuggable — and debuggability is what makes it trustworthy enough to actually use.
+**Observability is not a nice-to-have:** The shift from a single Gemini call to a LangGraph agent with visible tool calls felt like the difference between trusting a result and understanding it. When the agent calls `retrieve_knowledge()` then `score_and_recommend()` before answering, you can see exactly why it said what it said. That traceability is what makes an AI system debuggable — and debuggability is what makes it trustworthy enough to actually use.
 
-**Testing AI systems requires a clean separation.** All 22 automated tests target deterministic behavior — they never call the Gemini API. This makes the suite fast, stable, and reproducible. Testing the AI layer is a different problem: it requires defining qualitative criteria ("does the explanation cite BPM?") and checking them through human review. Trying to write automated assertions for non-deterministic text generation produces brittle tests that break whenever the model changes.
+**Testing AI systems requires a clean separation.** All 22 automated tests target deterministic behavior, they never call the Gemini API. This makes the suite fast, stable, and reproducible. Testing the AI layer is a different problem as it requires defining qualitative criteria ("does the explanation cite BPM?") and checking them through human review. Trying to write automated assertions for non-deterministic text generation produces tests that break whenever the model changes.
 
 ### What I'd do differently with more time
 
 - Add semantic embeddings alongside TF-IDF to catch synonym mismatches in RAG retrieval
-- Expand the catalog to 200+ songs so coverage across genres and moods is more meaningful
+- Make the Spotify integration work so coverage across songs, genres, moods is more meaningful
 - Add session persistence so profiles survive page reloads
-- Define a structured output schema for Gemini responses so the UI can highlight the specific features the model cited
+
 
 ### Honest takeaway
 
-This project demonstrates that a useful, explainable, and testable recommendation system doesn't require a large dataset, a GPU, or a complex ML pipeline. The AI is one component surrounded by deterministic logic, input validation, retrieval infrastructure, and automated tests. That surrounding structure is what makes the AI component reliable.
+This project demonstrates that a useful, explainable, and testable recommendation system doesn't require a large dataset, a GPU, or a complex ML pipeline. The AI is one tool surrounded by deterministic logic, input validation, retrieval infrastructure, and automated tests. That surrounding structure is what makes the AI component reliable.
+
