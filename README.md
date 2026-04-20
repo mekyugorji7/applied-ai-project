@@ -1,5 +1,12 @@
 # 🎵 My Vibe — AI Music Recommender
 
+By Chukwuemeka Ugorji
+
+Foundations of AI Project 4
+
+## Product Screenshot
+<img width="848" height="803" alt="image" src="https://github.com/user-attachments/assets/46da91f2-2292-4ed9-a34a-ee271ab0cf4b" />
+
 ---
 
 ## Original Project (Module 3)
@@ -15,6 +22,8 @@
 It matters because most recommendation systems are black boxes, they return results but don't explain why. My Vibe shows its work as every score comes with a reason, every AI explanation cites the knowledge document it drew from, and every chat agent response shows which tools it called before answering.   
 
 Built across four modules in applied AI engineering: RAG, agentic tool-use, few-shot prompting, and automated evaluation.
+
+
 
 ---
 
@@ -320,9 +329,12 @@ python -m src.main --evaluate       # full evaluation harness (8 profiles)
 python scripts/evaluate.py          # same evaluation run directly
 ```
 
-See **Stretch scope (for grading clarity)** under Architecture Overview for what “multi-source” means here, where to run few-shot, and what the evaluation harness does not call.
 
----
+## Stretch UI Concept
+<img width="769" height="375" alt="image" src="https://github.com/user-attachments/assets/2786d431-e5a2-4774-a964-a9172211169f" />
+<img width="760" height="339" alt="image" src="https://github.com/user-attachments/assets/bd5bb8de-d841-4c25-9267-39a3d682f55f" />
+<img width="722" height="405" alt="image" src="https://github.com/user-attachments/assets/463f33b6-8513-4e34-b84f-43ff92e8fa3c" />
+
 
 ## Tech Stack
 
