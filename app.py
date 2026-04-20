@@ -136,7 +136,7 @@ all_moods  = sorted({s["mood"]  for s in songs})
 # ═════════════════════════════════════════════════════════════════════════════
 def show_profile_builder():
     st.title("🎵 My Vibe")
-    st.markdown("#### Tell us your taste. Get music that fits.")
+    st.markdown("#### Discover songs that match your vibe.")
     st.markdown("---")
 
     # ── Preset quick-select ──────────────────────────────────────────────────
@@ -165,10 +165,7 @@ def show_profile_builder():
 
     # ── Spotify import + manual sliders ─────────────────────────────────────
     spotify = get_spotify_client()
-    col_sp, col_form = st.columns([1, 2], gap="large")
-
-    with col_sp:
-        st.markdown("**Import from Spotify**")
+    with st.expander("Spotify import (optional)"):
         if spotify.enabled:
             if st.session_state.spotify_connected:
                 st.success(f"Connected as **{st.session_state.spotify_display}**")
@@ -205,39 +202,38 @@ def show_profile_builder():
         else:
             st.info("Add `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` to `.env` to enable.")
 
-    with col_form:
-        with st.form("profile_form"):
-            st.markdown("**Refine your profile**")
-            st.caption("Spotify values are pre-filled below — adjust anything before submitting.")
+    with st.form("profile_form"):
+        st.markdown("**Refine your profile**")
+        st.caption("Fine tune values to your exact taste.")
 
-            genre_opts = ["(any)"] + all_genres
-            mood_opts  = ["(any)"] + all_moods
+        genre_opts = ["(any)"] + all_genres
+        mood_opts  = ["(any)"] + all_moods
 
-            col_a, col_b = st.columns(2)
-            fav_genre = col_a.selectbox(
-                "Favorite genre",
-                genre_opts,
-                index=genre_opts.index(p["genre"]) if p["genre"] in genre_opts else 0,
-            )
-            fav_mood = col_b.selectbox(
-                "Favorite mood",
-                mood_opts,
-                index=mood_opts.index(p["mood"]) if p["mood"] in mood_opts else 0,
-            )
+        col_a, col_b = st.columns(2)
+        fav_genre = col_a.selectbox(
+            "Favorite genre",
+            genre_opts,
+            index=genre_opts.index(p["genre"]) if p["genre"] in genre_opts else 0,
+        )
+        fav_mood = col_b.selectbox(
+            "Favorite mood",
+            mood_opts,
+            index=mood_opts.index(p["mood"]) if p["mood"] in mood_opts else 0,
+        )
 
-            target_energy  = st.slider("Energy",                   0.0, 1.0,   p["energy"],  0.01,
-                                       help="How intense and active the music should feel")
-            target_bpm     = st.slider("BPM (tempo)",              50.0, 200.0, p["bpm"],    1.0)
+        target_energy  = st.slider("Energy",                   0.0, 1.0,   p["energy"],  0.01,
+                                   help="How intense and active the music should feel")
+        target_bpm     = st.slider("BPM (tempo)",              50.0, 200.0, p["bpm"],    1.0)
 
-            col_c, col_d = st.columns(2)
-            target_valence = col_c.slider("Valence — sad → happy", 0.0, 1.0,   p["valence"], 0.01)
-            target_dance   = col_d.slider("Danceability",          0.0, 1.0,   p["dance"],   0.01)
+        col_c, col_d = st.columns(2)
+        target_valence = col_c.slider("Valence — sad → happy", 0.0, 1.0,   p["valence"], 0.01)
+        target_dance   = col_d.slider("Danceability",          0.0, 1.0,   p["dance"],   0.01)
 
-            likes_acoustic = st.checkbox("Prefers acoustic sound", value=p["acoustic"])
+        likes_acoustic = st.checkbox("Prefers acoustic sound", value=p["acoustic"])
 
-            k_songs = st.slider("Number of recommendations", 3, 10, 5)
+        k_songs = st.slider("Number of recommendations", 3, 10, 5)
 
-            submitted = st.form_submit_button("🎵 Find My Music", use_container_width=True, type="primary")
+        submitted = st.form_submit_button("🎵 Find My Music", use_container_width=True, type="primary")
 
     if submitted:
         raw_prefs = {
