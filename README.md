@@ -333,7 +333,8 @@ python scripts/evaluate.py          # same evaluation run directly
 ## Stretch UI Concept
 <img width="769" height="375" alt="image" src="https://github.com/user-attachments/assets/2786d431-e5a2-4774-a964-a9172211169f" />
 <img width="760" height="339" alt="image" src="https://github.com/user-attachments/assets/bd5bb8de-d841-4c25-9267-39a3d682f55f" />
-<img width="722" height="405" alt="image" src="https://github.com/user-attachments/assets/463f33b6-8513-4e34-b84f-43ff92e8fa3c" />
+<img width="724" height="405" alt="image" src="https://github.com/user-attachments/assets/1ef1bc00-9f07-4d3e-ae6b-351256827466" />
+
 
 
 ## Tech Stack
