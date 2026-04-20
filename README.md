@@ -4,8 +4,19 @@ By Chukwuemeka Ugorji
 
 Foundations of AI Project 4
 
-## Product Screenshot
+## Product Screenshots
+
+### Home Page - Select Vibe / Settings
 <img width="848" height="803" alt="image" src="https://github.com/user-attachments/assets/46da91f2-2292-4ed9-a34a-ee271ab0cf4b" />
+
+### Results - Top 5 Matching Songs
+<img width="848" height="803" alt="results page" src="https://github.com/user-attachments/assets/d850c2db-a198-47d5-849c-ecff851657c3" />
+
+### Few-Shot/RAG Profile Summary with Gemini 2.5
+<img width="870" height="767" alt="rag system summary" src="https://github.com/user-attachments/assets/f676502b-1024-495a-942c-3542d7cb2fd6" />
+
+### More Suggestions + Chat Agent Workflow
+<img width="870" height="767" alt="song similarity suggestions chat agent" src="https://github.com/user-attachments/assets/00ee61de-c7d4-4ca5-a4b1-28425d698032" />
 
 ---
 
